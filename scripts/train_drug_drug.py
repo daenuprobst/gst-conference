@@ -130,9 +130,9 @@ def load_drug_drug_from_smiles(data_dir):
 
         return sets
 
-    train_sets = load_split("train_reactions.pkl")
-    val_sets = load_split("valid_reactions.pkl")
-    test_sets = load_split("test_reactions.pkl")
+    train_sets = load_split("train.pkl")
+    val_sets = load_split("valid.pkl")
+    test_sets = load_split("test.pkl")
 
     return train_sets, val_sets, test_sets
 
@@ -198,8 +198,8 @@ def evaluate(model, loader, device, num_classes=None):
 
 
 def main():
-    data_dir = Path(__file__).parent.parent / "data" / "Drug_Drug"
-    output_dir = Path(__file__).parent.parent / "results" / "Drug_Drug"
+    data_dir = Path(__file__).parent.parent / "data" / "ddi"
+    output_dir = Path(__file__).parent.parent / "results" / "ddi"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
