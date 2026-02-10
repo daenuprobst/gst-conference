@@ -468,7 +468,7 @@ class GraphSetConv(nn.Module):
         return x_out
 
 
-class SetGraphClassifier(nn.Module):
+class GraphSetTransformerClassifier(nn.Module):
     def __init__(self, in_channels, hidden_dim, num_classes, dropout=0.1):
         super().__init__()
         self.setconv1 = GraphSetConv(
