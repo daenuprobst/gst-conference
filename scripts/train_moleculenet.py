@@ -71,7 +71,7 @@ def calculate_class_weights(dataset, num_classes=2):
     print(f"\nClass distribution in training set:")
     for i in range(num_classes):
         print(
-            f"  Class {i}: {int(class_counts[i])} samples ({class_counts[i]/total_samples*100:.2f}%)"
+            f"  Class {i}: {int(class_counts[i])} samples ({class_counts[i] / total_samples * 100:.2f}%)"
         )
     print(f"Class weights: {class_weights.tolist()}")
 
@@ -164,9 +164,9 @@ def main():
     }
 
     for dataset_name in dataset_names:
-        print(f"\n{'*'*80}")
+        print(f"\n{'*' * 80}")
         print(f"* PROCESSING DATASET: {dataset_name}")
-        print(f"{'*'*80}\n")
+        print(f"{'*' * 80}\n")
 
         if dataset_name in ["bace", "bbbp"]:
             train_dataset, val_dataset, test_dataset, tasks = molecule_net_loader(
@@ -196,9 +196,9 @@ def main():
             if len(train_dataset) < 500 and set_size > 5:
                 continue
 
-            print(f"\n{'*'*70}")
+            print(f"\n{'*' * 70}")
             print(f"* SET SIZE: {set_size}")
-            print(f"{'*'*70}")
+            print(f"{'*' * 70}")
 
             # Create sets of graphs with homogeneous labels
             val_sets = make_label_homogeneous_sets(val_dataset, set_size)
@@ -234,9 +234,9 @@ def main():
             )
 
             for trial in range(num_trials):
-                print(f"\n{'#'*60}")
+                print(f"\n{'#' * 60}")
                 print(f"# SET SIZE: {set_size} - TRIAL {trial + 1}/{num_trials}")
-                print(f"{'#'*60}")
+                print(f"{'#' * 60}")
                 # Results for this trial (for plotting the first trial)
                 trial_results = {
                     model_name: {"train_loss": [], "val_auroc": []}
@@ -266,11 +266,11 @@ def main():
 
                 # Train each model
                 for model_name in model_names:
-                    print(f"\n{'='*50}")
+                    print(f"\n{'=' * 50}")
                     print(
                         f"Set Size {set_size} - Trial {trial + 1} - Training {model_name}"
                     )
-                    print(f"{'='*50}")
+                    print(f"{'=' * 50}")
 
                     model = get_model(
                         model_name, in_channels, hidden_dims[model_name], num_classes
@@ -337,7 +337,7 @@ def main():
 
                         if (epoch + 1) % 10 == 0:
                             print(
-                                f"Epoch {epoch+1}/{num_epochs} - Train Loss: {train_loss:.4f}, Val AUROC: {val_auroc:.4f}"
+                                f"Epoch {epoch + 1}/{num_epochs} - Train Loss: {train_loss:.4f}, Val AUROC: {val_auroc:.4f}"
                             )
 
                     print(f"Best Val AUROC for {model_name}: {best_val_auroc:.4f}")
@@ -365,14 +365,14 @@ def main():
                         test_auroc
                     )
 
-        print(f"\n{'='*70}")
+        print(f"\n{'=' * 70}")
         print("FINAL RESULTS ACROSS ALL SET SIZES, MODELS, AND TRIALS")
-        print(f"{'='*70}\n")
+        print(f"{'=' * 70}\n")
 
         summary_data = []
         for set_size in set_sizes:
             print(f"\nSET SIZE: {set_size}")
-            print(f"{'-'*60}")
+            print(f"{'-' * 60}")
             for model_name in model_names:
                 test_aurocs = all_results[set_size][model_name]["test_auroc_per_trial"]
                 mean_test_auroc = np.mean(test_aurocs)

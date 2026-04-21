@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.13"
 resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'win32'",
@@ -412,6 +412,7 @@ dependencies = [
     { name = "deepchem" },
     { name = "matplotlib" },
     { name = "pandas" },
+    { name = "pymetis" },
     { name = "pytdc" },
     { name = "rdkit" },
     { name = "scikit-learn" },
@@ -424,6 +425,7 @@ requires-dist = [
     { name = "deepchem", specifier = ">=2.8.0" },
     { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "pandas", specifier = ">=3.0.0" },
+    { name = "pymetis", specifier = ">=2025.2.2" },
     { name = "pytdc", specifier = ">=0.3.6" },
     { name = "rdkit", specifier = ">=2025.9.3" },
     { name = "scikit-learn", specifier = ">=1.8.0" },
@@ -1111,6 +1113,29 @@ wheels = [
 ]
 
 [[package]]
+name = "pymetis"
+version = "2025.2.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/90/4e/c56ce33ddca372050ae829e5c3a3659e8096234c5c96ea010d27293d661b/pymetis-2025.2.2.tar.gz", hash = "sha256:79c6d56c30c6f3df7cc755617cbadcfc252a175ce4e5a59982edad0f1ab71c99", size = 348479, upload-time = "2025-11-06T17:40:09.73Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/03/df/9055f899bce6a0cee762367af42fa331279a684400b8f679b25d8af57453/pymetis-2025.2.2-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:6b0b2a38ced17850553982c8b18d9cd33afba91ac246ce0bdb3d6d8e569bd7e9", size = 251341, upload-time = "2025-11-06T17:39:50.64Z" },
+    { url = "https://files.pythonhosted.org/packages/e4/26/4152817e91fa79d26d7ca7a86f169ffce57112d7ba7fab6e69d0ec07ee9f/pymetis-2025.2.2-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:38a4880968203263bfe709105a808ad8f5e0993c962e04639c3a5b36f60bc134", size = 236842, upload-time = "2025-11-06T17:39:51.923Z" },
+    { url = "https://files.pythonhosted.org/packages/3c/0a/d511dc37e37179b50af47a07a0276be53cbee63fea0119fd0615a64d3662/pymetis-2025.2.2-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:08f9f603cc5328ee9b747d1cd6ced23a17ff99c1bcd17f20dfced92186e1d127", size = 275896, upload-time = "2025-11-06T17:39:53.339Z" },
+    { url = "https://files.pythonhosted.org/packages/15/75/a411f6fe26b4d90e4645501b1430e6241666baf268ff6dfbfd9fe3dedf02/pymetis-2025.2.2-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:896db1f37907335e4e60c39cc2bd5b66e3aebd52e04b092d8d1d2a4bcffba114", size = 1312211, upload-time = "2025-11-06T17:39:55.237Z" },
+    { url = "https://files.pythonhosted.org/packages/34/f6/a9c5f2094e05c1891b7d7e3632e8f8488bfdea1956d27add76adfcac797a/pymetis-2025.2.2-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:c070460ba8b96e2a5d3bfdf1337983d29db9ee3448cbc2c5e8a2fbd8cc65479c", size = 251762, upload-time = "2025-11-06T17:39:56.603Z" },
+    { url = "https://files.pythonhosted.org/packages/3d/46/f4c6a5ebdb0f1a04e3621b560a2ea0493c67985527e7e416c53e4b86e23b/pymetis-2025.2.2-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:c9a7b93c5a4745bc5abe7316f7542a16a964906394dc32267318315f2804b43c", size = 236946, upload-time = "2025-11-06T17:39:57.992Z" },
+    { url = "https://files.pythonhosted.org/packages/59/5a/f24a69abdf5e1c022a181e82c48992c8518e09fa6f2620e5c08f0b79200a/pymetis-2025.2.2-cp314-cp314-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:b7c93735a8bc200a0f00b3efa6dcc51d9ee1500b48b7852b3a19372e33f04b37", size = 275870, upload-time = "2025-11-06T17:39:59.721Z" },
+    { url = "https://files.pythonhosted.org/packages/af/d6/f0212b3cfec2b2fa7d0ffc9591ef9b5a094223ef23ebe7d2e89706c6160a/pymetis-2025.2.2-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:48650250a56611497e0c39c4e52539a5ee1b5349a930d7d7815a0224c85b2706", size = 1311897, upload-time = "2025-11-06T17:40:01.185Z" },
+    { url = "https://files.pythonhosted.org/packages/52/91/764248f2a2c70866e669a06027825b535ebc647587034c1fb2805eb13053/pymetis-2025.2.2-cp314-cp314t-macosx_10_15_x86_64.whl", hash = "sha256:9b0c4ff5e36156dd3d157304634c96642cf909a982ee8f778684a6201952466e", size = 263195, upload-time = "2025-11-06T17:40:02.572Z" },
+    { url = "https://files.pythonhosted.org/packages/2d/f4/48ab5ecd30f5bea34db52d6027ed7392d6204550d5c4e704ee1568fad274/pymetis-2025.2.2-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:fc42996ef8b95078693698074883114f62c0209341f32face33ac6327599d3ad", size = 246663, upload-time = "2025-11-06T17:40:04.266Z" },
+    { url = "https://files.pythonhosted.org/packages/ed/bc/f842a4770b87cf7f68326c87ebba3aac81f3bbb8e2c5b93fa4af3eb349f1/pymetis-2025.2.2-cp314-cp314t-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:db8169f36fb042a560e33bb80e15ec91f39f009518ed2fdd4784a457207cd644", size = 278483, upload-time = "2025-11-06T17:40:06.222Z" },
+    { url = "https://files.pythonhosted.org/packages/d9/9f/0347ae3eaea801c1ba28d4f2301f317826d76b1cb4b40c7319d28dde1610/pymetis-2025.2.2-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:301c0e6556b37c3321ce190a5638f5ae2110341d6e3e2e5a2141687de06a5e51", size = 1315038, upload-time = "2025-11-06T17:40:08.182Z" },
+]
+
+[[package]]
 name = "pyparsing"
 version = "3.3.2"
 source = { registry = "https://pypi.org/simple" }
@@ -1355,6 +1380,10 @@ dependencies = [
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ec/23/2c9fe0c9c27f7f6cb865abcea8a4568f29f00acaeadfc6a37f6801f84cb4/torch-2.10.0-2-cp313-none-macosx_11_0_arm64.whl", hash = "sha256:e521c9f030a3774ed770a9c011751fb47c4d12029a3d6522116e48431f2ff89e", size = 79498254, upload-time = "2026-02-10T21:44:44.095Z" },
+    { url = "https://files.pythonhosted.org/packages/ab/c6/4dfe238342ffdcec5aef1c96c457548762d33c40b45a1ab7033bb26d2ff2/torch-2.10.0-3-cp313-cp313-manylinux_2_28_x86_64.whl", hash = "sha256:80b1b5bfe38eb0e9f5ff09f206dcac0a87aadd084230d4a36eea5ec5232c115b", size = 915627275, upload-time = "2026-03-11T14:16:11.325Z" },
+    { url = "https://files.pythonhosted.org/packages/d8/f0/72bf18847f58f877a6a8acf60614b14935e2f156d942483af1ffc081aea0/torch-2.10.0-3-cp313-cp313t-manylinux_2_28_x86_64.whl", hash = "sha256:46b3574d93a2a8134b3f5475cfb98e2eb46771794c57015f6ad1fb795ec25e49", size = 915523474, upload-time = "2026-03-11T14:17:44.422Z" },
+    { url = "https://files.pythonhosted.org/packages/f4/39/590742415c3030551944edc2ddc273ea1fdfe8ffb2780992e824f1ebee98/torch-2.10.0-3-cp314-cp314-manylinux_2_28_x86_64.whl", hash = "sha256:b1d5e2aba4eb7f8e87fbe04f86442887f9167a35f092afe4c237dfcaaef6e328", size = 915632474, upload-time = "2026-03-11T14:15:13.666Z" },
+    { url = "https://files.pythonhosted.org/packages/b6/8e/34949484f764dde5b222b7fe3fede43e4a6f0da9d7f8c370bb617d629ee2/torch-2.10.0-3-cp314-cp314t-manylinux_2_28_x86_64.whl", hash = "sha256:0228d20b06701c05a8f978357f657817a4a63984b0c90745def81c18aedfa591", size = 915523882, upload-time = "2026-03-11T14:14:46.311Z" },
     { url = "https://files.pythonhosted.org/packages/c9/6f/f2e91e34e3fcba2e3fc8d8f74e7d6c22e74e480bbd1db7bc8900fdf3e95c/torch-2.10.0-cp313-cp313-manylinux_2_28_aarch64.whl", hash = "sha256:5c4d217b14741e40776dd7074d9006fd28b8a97ef5654db959d8635b2fe5f29b", size = 146004247, upload-time = "2026-01-21T16:24:29.335Z" },
     { url = "https://files.pythonhosted.org/packages/98/fb/5160261aeb5e1ee12ee95fe599d0541f7c976c3701d607d8fc29e623229f/torch-2.10.0-cp313-cp313-manylinux_2_28_x86_64.whl", hash = "sha256:6b71486353fce0f9714ca0c9ef1c850a2ae766b409808acd58e9678a3edb7738", size = 915716445, upload-time = "2026-01-21T16:22:45.353Z" },
     { url = "https://files.pythonhosted.org/packages/6a/16/502fb1b41e6d868e8deb5b0e3ae926bbb36dab8ceb0d1b769b266ad7b0c3/torch-2.10.0-cp313-cp313-win_amd64.whl", hash = "sha256:c2ee399c644dc92ef7bc0d4f7e74b5360c37cdbe7c5ba11318dda49ffac2bc57", size = 113757050, upload-time = "2026-01-21T16:24:19.204Z" },
