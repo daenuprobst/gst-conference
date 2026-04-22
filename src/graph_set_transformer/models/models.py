@@ -15,10 +15,23 @@ from torch_geometric.nn import (
     global_max_pool,
     global_add_pool,
     aggr,
+    GraphNorm,
 )
 from torch_geometric.utils import scatter
 from torch_geometric.utils import to_dense_batch
 from sklearn.metrics import roc_auc_score
+
+import warnings
+
+warnings.filterwarnings(
+    "ignore",
+    message=r".*torch-scatter.*",
+    category=UserWarning,
+)
+
+torch.manual_seed(42)
+np.random.seed(42)
+random.seed(42)
 
 
 # Wrappers to replace torch_scatter functions
@@ -357,6 +370,150 @@ class DeepSetGraphClassifier(nn.Module):
 
 
 # Graph set convolution (ours)
+# class PerceiverPool(nn.Module):
+#     def __init__(self, dim, num_queries=4, num_heads=4, dropout=0.0):
+#         super().__init__()
+#         self.num_queries = num_queries
+#
+#         self.queries = nn.Parameter(torch.randn(num_queries, dim) * 0.02)
+#
+#         self.ln_q = nn.LayerNorm(dim)
+#         self.ln_kv = nn.LayerNorm(dim)
+#         self.attn = nn.MultiheadAttention(
+#             embed_dim=dim,
+#             num_heads=num_heads,
+#             dropout=dropout,
+#             batch_first=True,
+#         )
+#         self.ln_out = nn.LayerNorm(dim)
+#         self.ffn = nn.Sequential(
+#             nn.Linear(dim, dim * 2),
+#             nn.GELU(),
+#             nn.Dropout(dropout),
+#             nn.Linear(dim * 2, dim),
+#         )
+#
+#     def forward(self, x, batch):
+#         x_dense, node_mask = to_dense_batch(x, batch)
+#         num_graphs = x_dense.size(0)
+#
+#         q = self.queries.unsqueeze(0).expand(num_graphs, -1, -1)
+#         q = self.ln_q(q)
+#
+#         kv = self.ln_kv(x_dense)
+#
+#         attn_out, _ = self.attn(q, kv, kv, key_padding_mask=~node_mask)
+#
+#         tokens = self.ln_out(q + attn_out)
+#         tokens = tokens + self.ffn(tokens)
+#
+#         return tokens  # [num_graphs, k, dim]
+#
+#
+# class GraphSetConv(nn.Module):
+#     def __init__(
+#         self,
+#         filters,
+#         in_channels=3,
+#         num_queries=4,
+#         num_heads=4,
+#         mhsa_dropout=0.2,
+#         ffn_dropout=0.2,
+#         use_gating=True,
+#         ffn_multiplier=4,
+#         activation=None,
+#     ):
+#         super().__init__()
+#         self.filters = filters
+#         self.num_queries = num_queries
+#         self.use_gating = use_gating
+#
+#         self.gcn_layer = GCNConv(in_channels, filters, improved=True)
+#         self.gcn_norms = GraphNorm(filters)
+#         self.act = nn.GELU()
+#         self.gcn_dropout = nn.Dropout(ffn_dropout)
+#
+#         # Multi-token pooling replaces _pool_graphs
+#         self.pool = PerceiverPool(
+#             filters, num_queries=num_queries, num_heads=num_heads, dropout=mhsa_dropout
+#         )
+#
+#         # Set-level transformer (pre-norm)
+#         self.ln1 = nn.LayerNorm(filters)
+#         self.mha = nn.MultiheadAttention(
+#             filters, num_heads, dropout=mhsa_dropout, batch_first=True
+#         )
+#         self.ln2 = nn.LayerNorm(filters)
+#         self.ffn = nn.Sequential(
+#             nn.Linear(filters, filters * ffn_multiplier),
+#             nn.GELU(),
+#             nn.Dropout(ffn_dropout),
+#             nn.Linear(filters * ffn_multiplier, filters),
+#             nn.Dropout(ffn_dropout),
+#         )
+#
+#         # Broadcast: aggregate k tokens per graph back to one vector before gating
+#         # (simplest option; see "richer broadcast" below for an upgrade)
+#         self.token_agg = nn.Linear(filters * num_queries, filters)
+#
+#         if use_gating:
+#             self.gate = nn.Sequential(nn.Linear(filters * 2, filters), nn.Sigmoid())
+#
+#     def forward(self, x, edge_index, batch, set_batch):
+#         # --- Per-graph GNN encoding ---
+#         x = self.gcn_layer(x, edge_index)
+#         x = self.gcn_norms(x, batch)
+#         x = self.act(x)
+#         x = self.gcn_dropout(x)
+#
+#         # --- Multi-token pooling: [num_graphs, k, dim] ---
+#         graph_tokens = self.pool(x, batch)  # [G, k, D]
+#         G, k, D = graph_tokens.shape
+#
+#         # --- Build set-level token sequence ---
+#         # Flatten: k tokens per graph, all sharing that graph's set_batch id
+#         tokens_flat = graph_tokens.reshape(G * k, D)  # [G*k, D]
+#         token_set_batch = set_batch.repeat_interleave(k)  # [G*k]
+#
+#         # Dense per-set tensor: [num_sets, max_tokens_in_set, D]
+#         z_dense, mask = to_dense_batch(tokens_flat, token_set_batch)
+#
+#         # --- Pre-norm transformer block over the set ---
+#         z_norm = self.ln1(z_dense)
+#         z_attn, _ = self.mha(z_norm, z_norm, z_norm, key_padding_mask=~mask)
+#         z_dense = z_dense + z_attn
+#         z_dense = z_dense + self.ffn(self.ln2(z_dense))
+#
+#         # --- Unbatch back to [G*k, D] then to [G, k, D] ---
+#         tokens_out = z_dense[mask]  # [G*k, D]
+#         tokens_out = tokens_out.view(G, k, D)
+#
+#         # --- Broadcast set-aware context back to nodes ---
+#         # Aggregate k tokens per graph into one summary vector per graph
+#         set_info_per_graph = self.token_agg(tokens_out.reshape(G, k * D))  # [G, D]
+#         set_info = set_info_per_graph[batch]  # [num_nodes, D]
+#
+#         if self.use_gating:
+#             gate = self.gate(torch.cat([x, set_info], dim=-1))
+#             x_out = x + gate * set_info
+#         else:
+#             x_out = x + set_info
+#
+#         return x_out
+
+
+class DropPath(nn.Module):
+    def __init__(self, drop_prob: float = 0.0):
+        super().__init__()
+        self.drop_prob = drop_prob
+
+    def forward(self, x):
+        if self.drop_prob == 0.0 or not self.training:
+            return x
+        keep_prob = 1.0 - self.drop_prob
+        shape = (x.shape[0],) + (1,) * (x.ndim - 1)
+        mask = x.new_empty(shape).bernoulli_(keep_prob)
+        return x * mask / keep_prob
 
 
 class GraphSetConv(nn.Module):
@@ -364,13 +521,14 @@ class GraphSetConv(nn.Module):
         self,
         filters,
         in_channels=3,
-        activation="relu",
-        mhsa_dropout=0.0,
-        ffn_dropout=0.0,
-        pooling="mean",
+        activation="silu",
+        mhsa_dropout=0.2,
+        ffn_dropout=0.2,
+        pooling="multi",
         use_gating=True,
-        ffn_multiplier=8,
+        ffn_multiplier=4,
         num_heads=4,
+        drop_path=0.1,
     ):
         super().__init__()
         self.filters = filters
@@ -380,21 +538,20 @@ class GraphSetConv(nn.Module):
 
         self.gcn_layer = GCNConv(in_channels, filters, improved=True)
 
-        self.gcn_norms = nn.BatchNorm1d(filters)
+        self.gcn_norms = GraphNorm(filters)
         self.gcn_dropout = nn.Dropout(ffn_dropout)
 
         if num_heads == 0:
             num_heads = max(1, filters // 16)
 
-        self.ln_pre = nn.LayerNorm(filters)
+        self.ln1 = nn.LayerNorm(filters)
         self.mha = nn.MultiheadAttention(
             embed_dim=filters,
             num_heads=num_heads,
             dropout=mhsa_dropout,
             batch_first=True,
         )
-        self.ln_post_attn = nn.LayerNorm(filters)
-
+        self.ln2 = nn.LayerNorm(filters)
         self.ffn = nn.Sequential(
             nn.Linear(filters, filters * ffn_multiplier),
             self._build_activation(activation),
@@ -403,6 +560,10 @@ class GraphSetConv(nn.Module):
             nn.Dropout(ffn_dropout),
         )
         self.ln_post_ffn = nn.LayerNorm(filters)
+        self.pool_proj = nn.Linear(2 * filters, filters)
+
+        self.drop_path_attn = DropPath(drop_path)
+        self.drop_path_ffn = DropPath(drop_path)
 
         if use_gating:
             self.gate = nn.Sequential(nn.Linear(filters * 2, filters), nn.Sigmoid())
@@ -427,17 +588,16 @@ class GraphSetConv(nn.Module):
         elif self.pooling == "sum":
             return global_add_pool(x, batch)
         elif self.pooling == "multi":
-            mean_pool = global_mean_pool(x, batch)
-            max_pool = global_max_pool(x, batch)
-            return (mean_pool + max_pool) / 2  # Average to keep dimension
+            pooled = torch.cat(
+                [global_mean_pool(x, batch), global_max_pool(x, batch)], dim=-1
+            )
+            return self.pool_proj(pooled)
         else:
             return global_mean_pool(x, batch)
 
     def forward(self, x, edge_index, batch, set_batch):
-        x_input = x
-
         x = self.gcn_layer(x, edge_index)
-        x = self.gcn_norms(x)
+        x = self.gcn_norms(x, batch)
         x = self.act(x)
         x = self.gcn_dropout(x)
 
@@ -446,13 +606,27 @@ class GraphSetConv(nn.Module):
         z_dense, mask = to_dense_batch(z, set_batch)
         mask = mask.to(dtype=torch.bool, device=z_dense.device)
 
-        z_norm = self.ln_pre(z_dense)
+        # z_dense = (
+        #     z_dense
+        #     + self.mha(
+        #         self.ln1(z_dense),
+        #         self.ln1(z_dense),
+        #         self.ln1(z_dense),
+        #         key_padding_mask=~mask,
+        #     )[0]
+        # )
+        # z_dense = z_dense + self.ffn(self.ln2(z_dense))
 
-        z_attn, attn_weights = self.mha(z_norm, z_norm, z_norm, key_padding_mask=~mask)
-        z_dense = self.ln_post_attn(z_dense + z_attn)
+        z_attn, _ = self.mha(
+            self.ln1(z_dense),
+            self.ln1(z_dense),
+            self.ln1(z_dense),
+            key_padding_mask=~mask,
+        )
+        z_dense = z_dense + self.drop_path_attn(z_attn)
 
-        z_ffn = self.ffn(z_dense)
-        z_dense = self.ln_post_ffn(z_dense + z_ffn)
+        # Pre-norm FFN
+        z_dense = z_dense + self.drop_path_ffn(self.ffn(self.ln2(z_dense)))
 
         z_out = z_dense[mask]
 
@@ -461,7 +635,8 @@ class GraphSetConv(nn.Module):
         if self.use_gating:
             gate_input = torch.cat([x, set_info], dim=-1)
             gate_values = self.gate(gate_input)
-            x_out = gate_values * set_info + (1 - gate_values) * x
+            # x_out = gate_values * set_info + (1 - gate_values) * x
+            x_out = x + gate_values * set_info
         else:
             x_out = x + set_info
 
@@ -474,21 +649,21 @@ class GraphSetTransformerClassifier(nn.Module):
         self.setconv1 = GraphSetConv(
             filters=hidden_dim,
             in_channels=in_channels,
-            activation="relu",
+            activation="silu",
             mhsa_dropout=dropout,
             ffn_dropout=dropout,
         )
         self.setconv2 = GraphSetConv(
             filters=hidden_dim,
             in_channels=hidden_dim,
-            activation="relu",
+            activation="silu",
             mhsa_dropout=dropout,
             ffn_dropout=dropout,
         )
         self.setconv3 = GraphSetConv(
             filters=hidden_dim,
             in_channels=hidden_dim,
-            activation="relu",
+            activation="silu",
             mhsa_dropout=dropout,
             ffn_dropout=dropout,
         )
@@ -573,107 +748,3 @@ def make_label_homogeneous_sets(dataset, set_size):
 
     random.shuffle(sets)
     return sets
-
-
-def main():
-    seed = 42
-    torch.manual_seed(seed)
-    np.random.seed(seed)
-    random.seed(seed)
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-    # dataset = TUDataset(root="./data", name="ENZYMES", use_node_attr=True).shuffle()
-
-    def transform(data):
-        data.x = data.x.float()
-        return data
-
-    dataset = MoleculeNet(
-        root="./data", name="BACE", pre_transform=lambda data: transform(data)
-    )
-    # dataset = dataset[:10000]
-
-    test_size = int(len(dataset) / 10)
-    train_dataset, test_dataset = dataset[:test_size], dataset[test_size:]
-
-    set_size = 10
-    batch_size = 16
-
-    train_sets = make_label_homogeneous_sets(train_dataset, set_size)
-    test_sets = make_label_homogeneous_sets(test_dataset, set_size)
-
-    train_loader = TorchDataLoader(
-        SetDataset(train_sets),
-        batch_size=batch_size,
-        shuffle=True,
-        collate_fn=collate_sets,
-    )
-    test_loader = TorchDataLoader(
-        SetDataset(test_sets),
-        batch_size=batch_size,
-        shuffle=False,
-        collate_fn=collate_sets,
-    )
-
-    model = DeepSetGraphClassifier(
-        in_channels=dataset.num_node_features,
-        hidden_dim=64,
-        num_classes=dataset.num_classes,
-    ).to(device)
-
-    trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    non_trainable_params = sum(
-        p.numel() for p in model.parameters() if not p.requires_grad
-    )
-
-    print(f"Trainable parameters: {trainable_params:,}")
-    print(f"Non-trainable parameters: {non_trainable_params:,}")
-    print(f"Total parameters: {trainable_params + non_trainable_params:,}")
-
-    optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
-
-    for epoch in range(600):
-        model.train()
-        total_loss = 0
-
-        for data, set_batch, targets in train_loader:
-            data = data.to(device)
-            set_batch = set_batch.to(device)
-            targets = targets.to(device)
-
-            optimizer.zero_grad()
-            pred = model(data, set_batch)
-            loss = F.cross_entropy(pred, targets)
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-            optimizer.step()
-            total_loss += loss.item()
-
-        model.eval()
-
-        all_probs = []
-        all_targets = []
-
-        with torch.no_grad():
-            for data, set_batch, targets in test_loader:
-                data = data.to(device)
-                set_batch = set_batch.to(device)
-                targets = targets.to(device)
-
-                logits = model(data, set_batch)  # shape (N, 2)
-                probs = F.softmax(logits, dim=1)[:, 1]  # positive class
-
-                all_probs.append(probs.cpu())
-                all_targets.append(targets.cpu())
-
-        all_probs = torch.cat(all_probs).numpy()  # shape (N,)
-        all_targets = torch.cat(all_targets).numpy()  # shape (N,)
-
-        auroc = roc_auc_score(all_targets, all_probs)
-
-        print(f"Epoch {epoch:02d} >> Loss {total_loss:.4f} >> Test AUROC: {auroc:.4f}")
-
-
-if __name__ == "__main__":
-    main()

@@ -7,12 +7,17 @@ from datetime import datetime
 from pathlib import Path
 import pandas as pd
 
+from torch.optim.lr_scheduler import LambdaLR
+import math
 from torch.utils.data import DataLoader as TorchDataLoader
 from torch_geometric.datasets import LRGBDataset
 from torch_geometric.utils import k_hop_subgraph
 from torch_geometric.data import Batch
 from torch_geometric.nn import GCNConv, global_mean_pool
 from sklearn.metrics import average_precision_score
+
+import pymetis
+from torch_geometric.data import Data
 
 # Assuming these are available in your local environment
 from graph_set_transformer.models import (
@@ -54,6 +59,16 @@ class GCNBaseline(torch.nn.Module):
 # --- Utility Functions ---
 
 
+def cosine_with_warmup(optimizer, warmup_steps, total_steps, min_lr_ratio=0.01):
+    def lr_lambda(step):
+        if step < warmup_steps:
+            return step / max(1, warmup_steps)
+        progress = (step - warmup_steps) / max(1, total_steps - warmup_steps)
+        return max(min_lr_ratio, 0.5 * (1 + math.cos(math.pi * progress)))
+
+    return LambdaLR(optimizer, lr_lambda)
+
+
 def collate_sets_lrgb(batch):
     """
     Handles multi-label vectors and batched subgraph sets for LRGB.
@@ -93,37 +108,153 @@ def get_model(model_name, in_channels, hidden_dim, num_classes):
         return GCNBaseline(in_channels, hidden_dim, num_classes)
 
 
-def split_peptide_into_set(data, set_size=10, hops=2):
-    subgraphs = []
+# def split_peptide_into_set(data, set_size=10, hops=2):
+#     subgraphs = []
+#     num_nodes = data.num_nodes
+#
+#     if num_nodes >= set_size:
+#         indices = random.sample(range(num_nodes), set_size)
+#     else:
+#         indices = random.choices(range(num_nodes), k=set_size)
+#
+#     for idx in indices:
+#         node_idx, edge_index, edge_mask, _ = k_hop_subgraph(
+#             node_idx=idx,
+#             num_hops=hops,
+#             edge_index=data.edge_index,
+#             relabel_nodes=True,
+#             num_nodes=num_nodes,
+#         )
+#
+#         sub_data = data.clone()
+#         sub_data.x = data.x[node_idx].float()
+#         sub_data.edge_index = edge_index
+#         if hasattr(data, "edge_attr") and data.edge_attr is not None:
+#             sub_data.edge_attr = data.edge_attr[edge_mask]
+#         subgraphs.append(sub_data)
+#
+#     return subgraphs, data.y
+
+
+# def split_peptide_into_set(data, set_size=10, hops=2):
+#     num_nodes = data.num_nodes
+#     edge_index = data.edge_index
+#     x = data.x
+#     edge_attr = getattr(data, "edge_attr", None)
+#
+#     adjacency = [[] for _ in range(num_nodes)]
+#     row, col = edge_index.tolist()
+#     for s, d in zip(row, col):
+#         adjacency[s].append(d)
+#
+#     if set_size > 1 and num_nodes >= set_size:
+#         _, parts = pymetis.part_graph(set_size, adjacency=adjacency)
+#         assignment = torch.tensor(parts, dtype=torch.long)
+#     else:
+#         assignment = torch.zeros(num_nodes, dtype=torch.long)
+#
+#     subgraphs = []
+#     row_t, col_t = edge_index
+#
+#     for part in range(set_size):
+#         node_mask = assignment == part
+#         node_idx = node_mask.nonzero(as_tuple=False).view(-1)
+#
+#         if node_idx.numel() == 0:
+#             sub_data = Data(
+#                 x=torch.zeros((1, x.size(1)), dtype=x.dtype),
+#                 edge_index=torch.empty((2, 0), dtype=torch.long),
+#             )
+#             if edge_attr is not None:
+#                 shape = (0, edge_attr.size(1)) if edge_attr.dim() > 1 else (0,)
+#                 sub_data.edge_attr = torch.empty(shape, dtype=edge_attr.dtype)
+#             subgraphs.append(sub_data)
+#             continue
+#
+#         edge_mask = node_mask[row_t] & node_mask[col_t]
+#
+#         remap = torch.full((num_nodes,), -1, dtype=torch.long)
+#         remap[node_idx] = torch.arange(node_idx.numel())
+#         sub_edge_index = remap[edge_index[:, edge_mask]]
+#
+#         sub_data = Data(
+#             x=x[node_idx].float(),
+#             edge_index=sub_edge_index,
+#         )
+#         if edge_attr is not None:
+#             sub_data.edge_attr = edge_attr[edge_mask]
+#         subgraphs.append(sub_data)
+#
+#     return subgraphs, data.y
+
+
+def split_peptide_into_set(data, set_size=10, overlap_hops=5):
     num_nodes = data.num_nodes
+    edge_index = data.edge_index
+    x = data.x
+    edge_attr = getattr(data, "edge_attr", None)
 
-    if num_nodes >= set_size:
-        indices = random.sample(range(num_nodes), set_size)
+    adjacency = [[] for _ in range(num_nodes)]
+    row, col = edge_index.tolist()
+    for s, d in zip(row, col):
+        adjacency[s].append(d)
+
+    if set_size > 1 and num_nodes >= set_size:
+        _, parts = pymetis.part_graph(set_size, adjacency=adjacency)
+        assignment = torch.tensor(parts, dtype=torch.long)
     else:
-        indices = random.choices(range(num_nodes), k=set_size)
+        assignment = torch.zeros(num_nodes, dtype=torch.long)
 
-    for idx in indices:
-        node_idx, edge_index, edge_mask, _ = k_hop_subgraph(
-            node_idx=idx,
-            num_hops=hops,
-            edge_index=data.edge_index,
-            relabel_nodes=True,
-            num_nodes=num_nodes,
+    subgraphs = []
+    row_t, col_t = edge_index
+
+    for part in range(set_size):
+        core_mask = assignment == part
+        node_mask = core_mask.clone()
+
+        for _ in range(overlap_hops):
+            node_mask = node_mask | _one_hop_expand(node_mask, edge_index, num_nodes)
+
+        node_idx = node_mask.nonzero(as_tuple=False).view(-1)
+
+        if node_idx.numel() == 0:
+            sub_data = Data(
+                x=torch.zeros((1, x.size(1)), dtype=x.dtype),
+                edge_index=torch.empty((2, 0), dtype=torch.long),
+            )
+            if edge_attr is not None:
+                shape = (0, edge_attr.size(1)) if edge_attr.dim() > 1 else (0,)
+                sub_data.edge_attr = torch.empty(shape, dtype=edge_attr.dtype)
+            subgraphs.append(sub_data)
+            continue
+
+        edge_mask = node_mask[row_t] & node_mask[col_t]
+
+        remap = torch.full((num_nodes,), -1, dtype=torch.long)
+        remap[node_idx] = torch.arange(node_idx.numel())
+        sub_edge_index = remap[edge_index[:, edge_mask]]
+
+        sub_data = Data(
+            x=x[node_idx].float(),
+            edge_index=sub_edge_index,
         )
-
-        sub_data = data.clone()
-        sub_data.x = data.x[node_idx].float()
-        sub_data.edge_index = edge_index
-        if hasattr(data, "edge_attr") and data.edge_attr is not None:
-            sub_data.edge_attr = data.edge_attr[edge_mask]
+        if edge_attr is not None:
+            sub_data.edge_attr = edge_attr[edge_mask]
         subgraphs.append(sub_data)
 
     return subgraphs, data.y
 
 
+def _one_hop_expand(mask, edge_index, num_nodes):
+    row, col = edge_index
+    new_mask = mask.clone()
+    new_mask[col[mask[row]]] = True
+    new_mask[row[mask[col]]] = True
+    return new_mask
+
+
 def prepare_lrgb_set_dataset(dataset, set_size):
     set_list = []
-    print(f"Generating sets (size {set_size}) from {len(dataset)} peptides...")
     for data in dataset:
         subgraphs, label = split_peptide_into_set(data, set_size=set_size)
         set_list.append((subgraphs, label))
@@ -133,7 +264,7 @@ def prepare_lrgb_set_dataset(dataset, set_size):
 # --- Training and Evaluation ---
 
 
-def train_epoch(model, loader, optimizer, device):
+def train_epoch(model, loader, optimizer, scheduler, device):
     model.train()
     total_loss = 0
     for data, set_batch, targets in loader:
@@ -152,6 +283,7 @@ def train_epoch(model, loader, optimizer, device):
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
         optimizer.step()
+        scheduler.step()
         total_loss += loss.item()
 
     return total_loss / len(loader)
@@ -186,20 +318,20 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     dataset_name = "Peptides-func"
-    model_names = ["GCN", "GraphSetConv"]
+    model_names = ["GraphSetConv", "DeepSets"]
 
     learning_rates = {
         "SetTransformer": 1e-3,
         "DeepSets": 1e-3,
-        "GraphSetConv": 1e-4,
+        "GraphSetConv": 1e-3,
         "GCN": 1e-3,
     }
     hidden_dims = {"SetTransformer": 64, "DeepSets": 64, "GraphSetConv": 64, "GCN": 64}
 
-    set_sizes = [50]  # Example size
-    num_epochs = 50  # Reduced for testing
+    set_sizes = [20]  # Example size
+    num_epochs = 600  # Reduced for testing
     batch_size = 32
-    num_trials = 1
+    num_trials = 5
 
     # Load and Subset LRGB
     print(f"Loading {dataset_name}...")
@@ -207,9 +339,9 @@ def main():
     val_raw = LRGBDataset(root="./data/LRGB", name=dataset_name, split="val")
     test_raw = LRGBDataset(root="./data/LRGB", name=dataset_name, split="test")
 
-    train_raw = train_raw[: len(train_raw) // 10]
-    val_raw = val_raw[: len(val_raw) // 10]
-    test_raw = test_raw[: len(test_raw) // 10]
+    train_raw = train_raw[: len(train_raw)]
+    val_raw = val_raw[: len(val_raw)]
+    test_raw = test_raw[: len(test_raw)]
 
     in_channels = train_raw.num_features
     num_classes = train_raw.num_classes
@@ -227,14 +359,15 @@ def main():
             test_set_dataset, batch_size=batch_size, collate_fn=collate_sets_lrgb
         )
 
+        train_set_dataset = prepare_lrgb_set_dataset(train_raw, set_size)
+        train_loader = TorchDataLoader(
+            train_set_dataset,
+            batch_size=batch_size,
+            shuffle=True,
+            collate_fn=collate_sets_lrgb,
+        )
+
         for trial in range(num_trials):
-            train_set_dataset = prepare_lrgb_set_dataset(train_raw, set_size)
-            train_loader = TorchDataLoader(
-                train_set_dataset,
-                batch_size=batch_size,
-                shuffle=True,
-                collate_fn=collate_sets_lrgb,
-            )
 
             for model_name in model_names:
                 print(
@@ -247,11 +380,20 @@ def main():
                     model.parameters(), lr=learning_rates[model_name], weight_decay=0.01
                 )
 
+                total_steps = num_epochs * len(train_loader)
+                scheduler = cosine_with_warmup(
+                    optimizer,
+                    warmup_steps=5 * len(train_loader),
+                    total_steps=total_steps,
+                )
+
                 best_val_ap = 0
                 best_model_state = None
 
                 for epoch in range(num_epochs):
-                    t_loss = train_epoch(model, train_loader, optimizer, device)
+                    t_loss = train_epoch(
+                        model, train_loader, optimizer, scheduler, device
+                    )
                     v_ap = evaluate(model, val_loader, device)
 
                     if v_ap > best_val_ap:
