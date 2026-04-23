@@ -27,6 +27,19 @@ from graph_set_transformer.models import (
 )
 from graph_set_transformer.data import SetDataset
 
+
+def param_summary(model):
+    rows = [
+        (name, sum(p.numel() for p in m.parameters()))
+        for name, m in model.named_children()
+    ]
+    width = max(len(n) for n, _ in rows)
+    total = sum(c for _, c in rows)
+    for n, c in rows:
+        print(f"  {n:<{width}}  {c:>10,}  ({100 * c / total:5.1f}%)")
+    print(f"  {'TOTAL':<{width}}  {total:>10,}")
+
+
 # --- Models ---
 
 
@@ -188,7 +201,7 @@ def get_model(model_name, in_channels, hidden_dim, num_classes):
 #     return subgraphs, data.y
 
 
-def split_peptide_into_set(data, set_size=10, overlap_hops=10):
+def split_peptide_into_set(data, set_size=10, overlap_hops=5):
     num_nodes = data.num_nodes
     edge_index = data.edge_index
     x = data.x
@@ -312,13 +325,11 @@ def evaluate(model, loader, device):
 
 
 # --- Main Script ---
-
-
 def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     dataset_name = "Peptides-func"
-    model_names = ["SetTransformer", "GraphSetConv", "DeepSets"]
+    model_names = ["GraphSetConv"]
 
     learning_rates = {
         "SetTransformer": 1e-3,
@@ -326,10 +337,10 @@ def main():
         "GraphSetConv": 1e-3,
         "GCN": 1e-3,
     }
-    hidden_dims = {"SetTransformer": 64, "DeepSets": 64, "GraphSetConv": 64, "GCN": 64}
+    hidden_dims = {"SetTransformer": 64, "DeepSets": 64, "GraphSetConv": 32, "GCN": 64}
 
-    set_sizes = [20]  # Example size
-    num_epochs = 600  # Reduced for testing
+    set_sizes = [10]  # Example size
+    num_epochs = 200  # Reduced for testing
     batch_size = 32
     num_trials = 2
 
@@ -339,9 +350,9 @@ def main():
     val_raw = LRGBDataset(root="./data/LRGB", name=dataset_name, split="val")
     test_raw = LRGBDataset(root="./data/LRGB", name=dataset_name, split="test")
 
-    # train_raw = train_raw[: len(train_raw) // 5]
-    # val_raw = val_raw[: len(val_raw) // 5]
-    # test_raw = test_raw[: len(test_raw) // 5]
+    train_raw = train_raw[: len(train_raw) // 10]
+    val_raw = val_raw[: len(val_raw) // 10]
+    test_raw = test_raw[: len(test_raw) // 10]
 
     in_channels = train_raw.num_features
     num_classes = train_raw.num_classes
@@ -368,7 +379,6 @@ def main():
         )
 
         for trial in range(num_trials):
-
             for model_name in model_names:
                 print(
                     f"\n>> Model: {model_name} | Set Size: {set_size} | Trial: {trial + 1}"
@@ -376,6 +386,9 @@ def main():
                 model = get_model(
                     model_name, in_channels, hidden_dims[model_name], num_classes
                 ).to(device)
+
+                print(param_summary(model))
+
                 optimizer = torch.optim.AdamW(
                     model.parameters(), lr=learning_rates[model_name], weight_decay=0.01
                 )
