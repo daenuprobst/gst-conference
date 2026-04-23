@@ -17,6 +17,7 @@ from torch_geometric.nn import (
     aggr,
     GraphNorm,
 )
+from torch_geometric.nn.aggr import AttentionalAggregation
 from torch_geometric.utils import scatter
 from torch_geometric.utils import to_dense_batch
 from sklearn.metrics import roc_auc_score
@@ -524,7 +525,7 @@ class GraphSetConv(nn.Module):
         activation="silu",
         mhsa_dropout=0.2,
         ffn_dropout=0.2,
-        pooling="multi",
+        pooling="attn",
         use_gating=True,
         ffn_multiplier=4,
         num_heads=4,
@@ -565,6 +566,15 @@ class GraphSetConv(nn.Module):
         self.drop_path_attn = DropPath(drop_path)
         self.drop_path_ffn = DropPath(drop_path)
 
+        self.attn_pooling = AttentionalAggregation(
+            gate_nn=nn.Sequential(
+                nn.Linear(filters, filters),
+                self._build_activation("relu"),
+                nn.Linear(filters, 1),
+            ),
+            nn=None,
+        )
+        
         if use_gating:
             self.gate = nn.Sequential(nn.Linear(filters * 2, filters), nn.Sigmoid())
 
@@ -592,6 +602,8 @@ class GraphSetConv(nn.Module):
                 [global_mean_pool(x, batch), global_max_pool(x, batch)], dim=-1
             )
             return self.pool_proj(pooled)
+        elif self.pooling == "attn":
+            return self.attn_pooling(x, batch) 
         else:
             return global_mean_pool(x, batch)
 
@@ -644,7 +656,7 @@ class GraphSetConv(nn.Module):
 
 
 class GraphSetTransformerClassifier(nn.Module):
-    def __init__(self, in_channels, hidden_dim, num_classes, dropout=0.1):
+    def __init__(self, in_channels, hidden_dim, num_classes, dropout=0.3):
         super().__init__()
         self.setconv1 = GraphSetConv(
             filters=hidden_dim,

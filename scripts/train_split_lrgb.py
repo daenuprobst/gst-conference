@@ -188,7 +188,7 @@ def get_model(model_name, in_channels, hidden_dim, num_classes):
 #     return subgraphs, data.y
 
 
-def split_peptide_into_set(data, set_size=10, overlap_hops=5):
+def split_peptide_into_set(data, set_size=10, overlap_hops=10):
     num_nodes = data.num_nodes
     edge_index = data.edge_index
     x = data.x
@@ -318,7 +318,7 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     dataset_name = "Peptides-func"
-    model_names = ["GraphSetConv", "DeepSets"]
+    model_names = ["SetTransformer", "GraphSetConv", "DeepSets"]
 
     learning_rates = {
         "SetTransformer": 1e-3,
@@ -331,7 +331,7 @@ def main():
     set_sizes = [20]  # Example size
     num_epochs = 600  # Reduced for testing
     batch_size = 32
-    num_trials = 5
+    num_trials = 2
 
     # Load and Subset LRGB
     print(f"Loading {dataset_name}...")
@@ -339,9 +339,9 @@ def main():
     val_raw = LRGBDataset(root="./data/LRGB", name=dataset_name, split="val")
     test_raw = LRGBDataset(root="./data/LRGB", name=dataset_name, split="test")
 
-    train_raw = train_raw[: len(train_raw)]
-    val_raw = val_raw[: len(val_raw)]
-    test_raw = test_raw[: len(test_raw)]
+    # train_raw = train_raw[: len(train_raw) // 5]
+    # val_raw = val_raw[: len(val_raw) // 5]
+    # test_raw = test_raw[: len(test_raw) // 5]
 
     in_channels = train_raw.num_features
     num_classes = train_raw.num_classes
