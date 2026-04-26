@@ -1,3 +1,4 @@
+# from graph_set_transformer.models.models import GCNClassifier
 from time import perf_counter
 import torch
 import torch_geometric
@@ -42,6 +43,8 @@ def get_model(model_name, in_channels, hidden_dim, num_classes):
         return DeepSetGraphClassifier(in_channels, hidden_dim, num_classes)
     elif model_name == "GraphSetConv":
         return GraphSetTransformerClassifier(in_channels, hidden_dim, num_classes)
+    # elif model_name == "GCN":
+    #     return GCNClassifier(in_channels, hidden_dim, num_classes)
 
 
 def load_dataset(dataset_name):
@@ -71,7 +74,7 @@ def calculate_class_weights(dataset, num_classes=2):
     print(f"\nClass distribution in training set:")
     for i in range(num_classes):
         print(
-            f"  Class {i}: {int(class_counts[i])} samples ({class_counts[i] / total_samples * 100:.2f}%)"
+            f"  Class {i}: {int(class_counts[i])} samples ({class_counts[i]/total_samples*100:.2f}%)"
         )
     print(f"Class weights: {class_weights.tolist()}")
 
@@ -123,30 +126,33 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     dataset_names = [
-        # "CYP3A4_Substrate_CarbonMangels",
+        # "syn",
+        # "CYP2C9_Veith",
         "bace",
-        "CYP2D6_Substrate_CarbonMangels",
-        "CYP2C9_Substrate_CarbonMangels",
-        "bbbp",
-        "BBB_Martins",
-        "Pgp_Broccatelli",
+        # "CYP3A4_Substrate_CarbonMangels",
+        # "CYP2D6_Substrate_CarbonMangels",
+        # "CYP2C9_Substrate_CarbonMangels",
+        # "bbbp",
+        # "BBB_Martins",
+        # "Pgp_Broccatelli",
     ]
 
     # model_names = ["GraphSetConv", "SetTransformer", "DeepSets"]
-    model_names = ["SetTransformer"]
-    # model_names = ["GraphSetConv"]
+    # model_names = ["SetTransformer"]
+    model_names = ["GraphSetConv"]
+    # model_names = ["DeepSets"]
 
     # settransformer works better with 5e-4 for moleculenet and better with 1e-4 for tdc
     learning_rates = {
         "SetTransformer": 1e-3,
         "DeepSets": 1e-3,
-        "GraphSetConv": 1e-4,
+        "GraphSetConv": 1e-3,
     }
     hidden_dims = {"SetTransformer": 64, "DeepSets": 64, "GraphSetConv": 64}
-    set_sizes = [10]
+    set_sizes = [5]
     # set_sizes = [5, 10, 20]
     # set_sizes = [20, 10, 5]
-    num_epochs = 1000
+    num_epochs = 500
     batch_size = 32
     num_trials = 5
     use_class_weights = False
@@ -164,9 +170,9 @@ def main():
     }
 
     for dataset_name in dataset_names:
-        print(f"\n{'*' * 80}")
+        print(f"\n{'*'*80}")
         print(f"* PROCESSING DATASET: {dataset_name}")
-        print(f"{'*' * 80}\n")
+        print(f"{'*'*80}\n")
 
         if dataset_name in ["bace", "bbbp"]:
             train_dataset, val_dataset, test_dataset, tasks = molecule_net_loader(
@@ -196,20 +202,13 @@ def main():
             if len(train_dataset) < 500 and set_size > 5:
                 continue
 
-            print(f"\n{'*' * 70}")
+            print(f"\n{'*'*70}")
             print(f"* SET SIZE: {set_size}")
-            print(f"{'*' * 70}")
+            print(f"{'*'*70}")
 
             # Create sets of graphs with homogeneous labels
-            val_sets = make_label_homogeneous_sets(val_dataset, set_size)
-            test_sets = make_label_homogeneous_sets(test_dataset, set_size)
-
-            # val_sets = make_label_homogeneous_sets_rand_card(
-            #     val_dataset, card_max=set_size, shuffle=False
-            # )
-            # test_sets = make_label_homogeneous_sets_rand_card(
-            #     test_dataset, card_max=set_size, shuffle=False
-            # )
+            val_sets = make_label_homogeneous_sets(val_dataset, 1)
+            test_sets = make_label_homogeneous_sets(test_dataset, 1)
 
             # Create SetDatasets
             val_set_dataset = SetDataset(val_sets)
@@ -234,9 +233,9 @@ def main():
             )
 
             for trial in range(num_trials):
-                print(f"\n{'#' * 60}")
+                print(f"\n{'#'*60}")
                 print(f"# SET SIZE: {set_size} - TRIAL {trial + 1}/{num_trials}")
-                print(f"{'#' * 60}")
+                print(f"{'#'*60}")
                 # Results for this trial (for plotting the first trial)
                 trial_results = {
                     model_name: {"train_loss": [], "val_auroc": []}
@@ -266,11 +265,11 @@ def main():
 
                 # Train each model
                 for model_name in model_names:
-                    print(f"\n{'=' * 50}")
+                    print(f"\n{'='*50}")
                     print(
                         f"Set Size {set_size} - Trial {trial + 1} - Training {model_name}"
                     )
-                    print(f"{'=' * 50}")
+                    print(f"{'='*50}")
 
                     model = get_model(
                         model_name, in_channels, hidden_dims[model_name], num_classes
@@ -319,6 +318,7 @@ def main():
                         # Validate
                         start = perf_counter()
                         val_auroc = evaluate(model, val_loader, device)
+                        test_auroc = evaluate(model, test_loader, device)
 
                         end = perf_counter()
                         # print(f"time 3: {end - start}")
@@ -337,7 +337,7 @@ def main():
 
                         if (epoch + 1) % 10 == 0:
                             print(
-                                f"Epoch {epoch + 1}/{num_epochs} - Train Loss: {train_loss:.4f}, Val AUROC: {val_auroc:.4f}"
+                                f"Epoch {epoch+1}/{num_epochs} - Train Loss: {train_loss:.4f}, Val AUROC: {val_auroc:.4f}, Test AUROC: {test_auroc:.4f}"
                             )
 
                     print(f"Best Val AUROC for {model_name}: {best_val_auroc:.4f}")
@@ -365,14 +365,14 @@ def main():
                         test_auroc
                     )
 
-        print(f"\n{'=' * 70}")
+        print(f"\n{'='*70}")
         print("FINAL RESULTS ACROSS ALL SET SIZES, MODELS, AND TRIALS")
-        print(f"{'=' * 70}\n")
+        print(f"{'='*70}\n")
 
         summary_data = []
         for set_size in set_sizes:
             print(f"\nSET SIZE: {set_size}")
-            print(f"{'-' * 60}")
+            print(f"{'-'*60}")
             for model_name in model_names:
                 test_aurocs = all_results[set_size][model_name]["test_auroc_per_trial"]
                 mean_test_auroc = np.mean(test_aurocs)
@@ -392,11 +392,46 @@ def main():
                     }
                 )
 
+        # # Create plots for each set size using the first trial's data
+        # num_set_sizes = len(set_sizes)
+        # fig, axes = plt.subplots(num_set_sizes, 2, figsize=(12, 5 * num_set_sizes))
+
+        # # Handle case where there's only one set size
+        # if num_set_sizes == 1:
+        #     axes = axes.reshape(1, -1)
+
+        # for idx, set_size in enumerate(set_sizes):
+        #     for model_name in model_names:
+        #         # Use first trial for plotting
+        #         axes[idx, 0].plot(
+        #             all_results[set_size][model_name]["train_loss_per_trial"][0],
+        #             label=model_name,
+        #         )
+        #         axes[idx, 1].plot(
+        #             all_results[set_size][model_name]["val_auroc_per_trial"][0],
+        #             label=model_name,
+        #         )
+
+        #     axes[idx, 0].set_title(f"Train Loss (Set Size {set_size}, Trial 1)")
+        #     axes[idx, 0].set_xlabel("Epoch")
+        #     axes[idx, 0].set_ylabel("Loss")
+        #     axes[idx, 0].legend()
+
+        #     axes[idx, 1].set_title(f"Validation AUROC (Set Size {set_size}, Trial 1)")
+        #     axes[idx, 1].set_xlabel("Epoch")
+        #     axes[idx, 1].set_ylabel("AUROC")
+        #     axes[idx, 1].legend()
+
+        # plt.tight_layout()
+
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         weight_suffix = "_weighted" if use_class_weights else ""
 
         plot_filename = f"model_comparison_{dataset_name}{weight_suffix}.png"
         csv_filename = f"model_comparison_{dataset_name}{weight_suffix}.csv"
+
+        # plt.savefig(plot_filename)
+        # print(f"\nSaved plot to {plot_filename}")
 
         summary_df = pd.DataFrame(summary_data)
         summary_df.to_csv(csv_filename, index=False)
@@ -411,3 +446,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

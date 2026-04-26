@@ -201,7 +201,7 @@ def get_model(model_name, in_channels, hidden_dim, num_classes):
 #     return subgraphs, data.y
 
 
-def split_peptide_into_set(data, set_size=10, overlap_hops=5):
+def split_peptide_into_set(data, set_size=10, overlap_hops=0):
     num_nodes = data.num_nodes
     edge_index = data.edge_index
     x = data.x
@@ -329,6 +329,7 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     dataset_name = "Peptides-func"
+    # model_names = ["DeepSets", "GraphSetConv", "SetTransformer"]
     model_names = ["GraphSetConv"]
 
     learning_rates = {
@@ -337,12 +338,12 @@ def main():
         "GraphSetConv": 1e-3,
         "GCN": 1e-3,
     }
-    hidden_dims = {"SetTransformer": 64, "DeepSets": 64, "GraphSetConv": 32, "GCN": 64}
+    hidden_dims = {"SetTransformer": 64, "DeepSets": 64, "GraphSetConv": 64, "GCN": 64}
 
     set_sizes = [10]  # Example size
-    num_epochs = 200  # Reduced for testing
+    num_epochs = 500  # Reduced for testing
     batch_size = 32
-    num_trials = 2
+    num_trials = 3
 
     # Load and Subset LRGB
     print(f"Loading {dataset_name}...")
@@ -350,9 +351,9 @@ def main():
     val_raw = LRGBDataset(root="./data/LRGB", name=dataset_name, split="val")
     test_raw = LRGBDataset(root="./data/LRGB", name=dataset_name, split="test")
 
-    train_raw = train_raw[: len(train_raw) // 10]
-    val_raw = val_raw[: len(val_raw) // 10]
-    test_raw = test_raw[: len(test_raw) // 10]
+    # train_raw = train_raw[: len(train_raw) // 10]
+    # val_raw = val_raw[: len(val_raw) // 10]
+    # test_raw = test_raw[: len(test_raw) // 10]
 
     in_channels = train_raw.num_features
     num_classes = train_raw.num_classes
@@ -408,6 +409,7 @@ def main():
                         model, train_loader, optimizer, scheduler, device
                     )
                     v_ap = evaluate(model, val_loader, device)
+                    t_ap = evaluate(model, test_loader, device)
 
                     if v_ap > best_val_ap:
                         best_val_ap = v_ap
@@ -417,7 +419,7 @@ def main():
 
                     if (epoch + 1) % 5 == 0:
                         print(
-                            f"Epoch {epoch + 1:03d} | Loss: {t_loss:.4f} | Val AP: {v_ap:.4f}"
+                            f"Epoch {epoch + 1:03d} | Loss: {t_loss:.4f} | Val AP: {v_ap:.4f} | Test AP: {t_ap:.4f}"
                         )
 
                 model.load_state_dict(best_model_state)

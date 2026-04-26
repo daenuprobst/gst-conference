@@ -115,18 +115,33 @@ def molecule_net_loader(
     split_ratio=0.7,
     seed=42,
     task_name=None,
+    use_scaffold_split=True,
     **kwargs,
 ):
     enc = GraphEncoder()
 
     df = pd.read_csv(path)
 
-    # Drop NAs. Needed in Tox21
     if name in ["tox21"]:
         df = df.replace("", np.nan)
         df = df.dropna(subset=[task_name])
 
-    train_ids, valid_ids, test_ids = scaffold_split(df, 0.1, 0.1, seed)
+    df = df.sample(frac=1, random_state=seed).reset_index(drop=True)
+
+    if use_scaffold_split:
+        train_ids, valid_ids, test_ids = scaffold_split(df, 0.1, 0.1, seed)
+    else:
+        shuffled_ids = df.index.numpy()
+        np.random.seed(seed)
+        np.random.shuffle(shuffled_ids)
+
+        n = len(shuffled_ids)
+        valid_size = int(0.1 * n)
+        test_size = int(0.1 * n)
+
+        train_ids = shuffled_ids[valid_size + test_size :]
+        valid_ids = shuffled_ids[:valid_size]
+        test_ids = shuffled_ids[valid_size : valid_size + test_size]
 
     train = df.loc[train_ids]
     valid = df.loc[valid_ids]
