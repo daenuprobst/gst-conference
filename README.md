@@ -18,11 +18,11 @@ molecule changes depending on what else is in the flask.
 
 A lot of tasks are naturally about a group of graphs rather than one:
 
-- **Reactions** — a set of reactant molecules, and you want to know which atoms
+- **Reactions**: a set of reactant molecules, and you want to know which atoms
   react or what the yield will be.
-- **Mixtures and formulations** — several components whose joint behaviour is the
+- **Mixtures and formulations**: several components whose joint behaviour is the
   thing you care about.
-- **Any case where context matters** — the same graph can have different labels
+- **Any case where context matters**: the same graph can have different labels
   depending on the company it keeps.
 
 The usual approach is to encode each graph on its own and then pool the results
