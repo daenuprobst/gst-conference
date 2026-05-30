@@ -1,0 +1,80 @@
+{
+  "args": {
+    "device": "cpu",
+    "data_root": "data/drugsyn",
+    "out_dir": "results/drugsyn_smoke",
+    "quick": true,
+    "models": [
+      "gsc-bc",
+      "gsc-ca",
+      "gcn-ds",
+      "gcn-st"
+    ],
+    "hidden": 128,
+    "layers": 3,
+    "num_heads": 4,
+    "dropout": 0.1,
+    "cell_line_hidden": 128,
+    "equalize_params": "none",
+    "epochs": 20,
+    "patience": 10,
+    "batch_size": 16,
+    "lr": 0.001,
+    "seeds": 1,
+    "seed_offset": 0,
+    "train_ratio": 0.7,
+    "val_ratio": 0.1,
+    "split_seed": 0,
+    "val_fraction_from_train": 0.1,
+    "feature_mode": "rich",
+    "max_samples": 1000,
+    "no_stratified_subsample": false,
+    "max_atoms_per_drug": 100,
+    "train_size_ablation": false,
+    "train_size_fractions": [
+      0.025,
+      0.05,
+      0.1,
+      0.2,
+      0.3,
+      0.5,
+      0.7
+    ],
+    "train_size_min_val": 50,
+    "_cell_line_dim": 8785
+  },
+  "models": {
+    "gsc-bc": "GraphSetConv-Broadcast",
+    "gsc-ca": "GraphSetConv-CrossAttn",
+    "gcn-ds": "GCN+DeepSets",
+    "gcn-st": "GCN+SetTransformer"
+  },
+  "model_param_counts": {
+    "gsc-bc": 1825156,
+    "gsc-ca": 2024068,
+    "gcn-ds": 1295233,
+    "gcn-st": 1428097
+  },
+  "model_hidden_dims": {
+    "gsc-bc": 128,
+    "gsc-ca": 128,
+    "gcn-ds": 128,
+    "gcn-st": 128
+  },
+  "split_sizes": {
+    "train": 700,
+    "val": 100,
+    "test": 200
+  },
+  "target_stats": {
+    "mean": 4.424186706542969,
+    "std": 24.620515823364258
+  },
+  "env": {
+    "python": "3.14.5",
+    "torch": "2.10.0+cu128",
+    "platform": "Linux-7.0.9-1-cachyos-x86_64-with-glibc2.43",
+    "cuda": false,
+    "cuda_device": null
+  }
+}

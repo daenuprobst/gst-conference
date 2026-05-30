@@ -1,0 +1,323 @@
+{
+  "per_cond": {
+    "A": {
+      "name": "GST single",
+      "params": 43335,
+      "test_acc_seeds": [
+        0.402,
+        0.407,
+        0.397
+      ],
+      "test_f1_seeds": [
+        0.36898501719327165,
+        0.3616925113007565,
+        0.38532038979824956
+      ],
+      "best_val_seeds": [
+        0.4166666666666667,
+        0.4266666666666667,
+        0.4066666666666667
+      ],
+      "acc_mean_ci": [
+        0.40199999999999997,
+        0.012420688558751593
+      ],
+      "f1_mean_ci": [
+        0.3719993060974259,
+        0.030055357635354118
+      ],
+      "best_val_mean": 0.4166666666666667,
+      "total_train_seconds": 41.208191871643066
+    },
+    "E": {
+      "name": "GCN baseline",
+      "params": 4932,
+      "test_acc_seeds": [
+        0.363,
+        0.36,
+        0.363
+      ],
+      "test_f1_seeds": [
+        0.32562793693950054,
+        0.34632990169517025,
+        0.30552112225524186
+      ],
+      "best_val_seeds": [
+        0.36333333333333334,
+        0.35333333333333333,
+        0.37
+      ],
+      "acc_mean_ci": [
+        0.36199999999999993,
+        0.004302652729749465
+      ],
+      "f1_mean_ci": [
+        0.32582632029663755,
+        0.05068911073218301
+      ],
+      "best_val_mean": 0.3622222222222222,
+      "total_train_seconds": 11.468971014022827
+    },
+    "H": {
+      "name": "GST + node-del subgraphs",
+      "params": 43335,
+      "test_acc_seeds": [
+        0.451,
+        0.423,
+        0.443
+      ],
+      "test_f1_seeds": [
+        0.421323320363279,
+        0.3982939164615601,
+        0.41853901760416584
+      ],
+      "best_val_seeds": [
+        0.4633333333333333,
+        0.39,
+        0.44666666666666666
+      ],
+      "acc_mean_ci": [
+        0.439,
+        0.03582674358011843
+      ],
+      "f1_mean_ci": [
+        0.412718751476335,
+        0.03122463123613307
+      ],
+      "best_val_mean": 0.4333333333333333,
+      "total_train_seconds": 207.07242703437805
+    },
+    "I": {
+      "name": "GCN+DS + node-del subgraphs",
+      "params": 7044,
+      "test_acc_seeds": [
+        0.415,
+        0.396,
+        0.383
+      ],
+      "test_f1_seeds": [
+        0.36836722709822384,
+        0.3578580287832206,
+        0.3139446877600035
+      ],
+      "best_val_seeds": [
+        0.41,
+        0.4166666666666667,
+        0.36666666666666664
+      ],
+      "acc_mean_ci": [
+        0.39799999999999996,
+        0.03997841297842499
+      ],
+      "f1_mean_ci": [
+        0.3467233145471493,
+        0.07171545066116972
+      ],
+      "best_val_mean": 0.3977777777777778,
+      "total_train_seconds": 132.4989275932312
+    }
+  },
+  "comparisons": [
+    {
+      "a": "A",
+      "b": "E",
+      "mean_diff": 0.040000000000000036,
+      "dz": 6.09994281330421,
+      "p": 0.25,
+      "p_adj": 1.0,
+      "reject": false
+    },
+    {
+      "a": "H",
+      "b": "A",
+      "mean_diff": 0.03700000000000003,
+      "dz": 2.027587510099408,
+      "p": 0.25,
+      "p_adj": 1.0,
+      "reject": false
+    },
+    {
+      "a": "H",
+      "b": "E",
+      "mean_diff": 0.07700000000000007,
+      "dz": 6.0311054649072675,
+      "p": 0.25,
+      "p_adj": 1.0,
+      "reject": false
+    },
+    {
+      "a": "H",
+      "b": "I",
+      "mean_diff": 0.041000000000000036,
+      "dz": 2.403462565218251,
+      "p": 0.25,
+      "p_adj": 1.0,
+      "reject": false
+    },
+    {
+      "a": "I",
+      "b": "E",
+      "mean_diff": 0.03600000000000003,
+      "dz": 2.2500000000000027,
+      "p": 0.25,
+      "p_adj": 1.0,
+      "reject": false
+    }
+  ],
+  "rows": [
+    {
+      "condition": "A",
+      "seed": 0,
+      "test_acc": 0.402,
+      "test_f1": 0.36898501719327165,
+      "best_val_acc": 0.4166666666666667,
+      "params": 43335,
+      "elapsed_s": 11.802300453186035,
+      "epochs_run": 28
+    },
+    {
+      "condition": "A",
+      "seed": 1,
+      "test_acc": 0.407,
+      "test_f1": 0.3616925113007565,
+      "best_val_acc": 0.4266666666666667,
+      "params": 43335,
+      "elapsed_s": 14.559762954711914,
+      "epochs_run": 35
+    },
+    {
+      "condition": "A",
+      "seed": 2,
+      "test_acc": 0.397,
+      "test_f1": 0.38532038979824956,
+      "best_val_acc": 0.4066666666666667,
+      "params": 43335,
+      "elapsed_s": 14.846128463745117,
+      "epochs_run": 34
+    },
+    {
+      "condition": "E",
+      "seed": 0,
+      "test_acc": 0.363,
+      "test_f1": 0.32562793693950054,
+      "best_val_acc": 0.36333333333333334,
+      "params": 4932,
+      "elapsed_s": 4.653781890869141,
+      "epochs_run": 32
+    },
+    {
+      "condition": "E",
+      "seed": 1,
+      "test_acc": 0.36,
+      "test_f1": 0.34632990169517025,
+      "best_val_acc": 0.35333333333333333,
+      "params": 4932,
+      "elapsed_s": 5.2545835971832275,
+      "epochs_run": 40
+    },
+    {
+      "condition": "E",
+      "seed": 2,
+      "test_acc": 0.363,
+      "test_f1": 0.30552112225524186,
+      "best_val_acc": 0.37,
+      "params": 4932,
+      "elapsed_s": 1.560605525970459,
+      "epochs_run": 12
+    },
+    {
+      "condition": "H",
+      "seed": 0,
+      "test_acc": 0.451,
+      "test_f1": 0.421323320363279,
+      "best_val_acc": 0.4633333333333333,
+      "params": 43335,
+      "elapsed_s": 68.69171190261841,
+      "epochs_run": 24
+    },
+    {
+      "condition": "H",
+      "seed": 1,
+      "test_acc": 0.423,
+      "test_f1": 0.3982939164615601,
+      "best_val_acc": 0.39,
+      "params": 43335,
+      "elapsed_s": 65.90053939819336,
+      "epochs_run": 24
+    },
+    {
+      "condition": "H",
+      "seed": 2,
+      "test_acc": 0.443,
+      "test_f1": 0.41853901760416584,
+      "best_val_acc": 0.44666666666666666,
+      "params": 43335,
+      "elapsed_s": 72.48017573356628,
+      "epochs_run": 26
+    },
+    {
+      "condition": "I",
+      "seed": 0,
+      "test_acc": 0.415,
+      "test_f1": 0.36836722709822384,
+      "best_val_acc": 0.41,
+      "params": 7044,
+      "elapsed_s": 41.53667616844177,
+      "epochs_run": 27
+    },
+    {
+      "condition": "I",
+      "seed": 1,
+      "test_acc": 0.396,
+      "test_f1": 0.3578580287832206,
+      "best_val_acc": 0.4166666666666667,
+      "params": 7044,
+      "elapsed_s": 63.47217845916748,
+      "epochs_run": 40
+    },
+    {
+      "condition": "I",
+      "seed": 2,
+      "test_acc": 0.383,
+      "test_f1": 0.3139446877600035,
+      "best_val_acc": 0.36666666666666664,
+      "params": 7044,
+      "elapsed_s": 27.49007296562195,
+      "epochs_run": 17
+    }
+  ],
+  "args": {
+    "device": "cpu",
+    "out_dir": "results/setaug_synth_v3",
+    "quick": false,
+    "n_train": 1500,
+    "n_val": 300,
+    "n_test": 1000,
+    "label_noise": 0.08,
+    "data_seed": 0,
+    "hidden": 32,
+    "layers": 3,
+    "num_heads": 4,
+    "dropout": 0.1,
+    "epochs": 60,
+    "patience": 10,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "batch_size_single": 32,
+    "batch_size_sets": 8,
+    "batch_size_subgraphs": 8,
+    "k_subgraphs": 8,
+    "k": 4,
+    "k_min": 1,
+    "supcon_weight": 0.5,
+    "supcon_temp": 0.1,
+    "seeds": 3,
+    "seed_offset": 0,
+    "conditions": [
+      "A",
+      "E",
+      "H",
+      "I"
+    ]
+  }
+}

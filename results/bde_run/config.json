@@ -1,0 +1,67 @@
+{
+  "args": {
+    "device": "cpu",
+    "data_root": "data/bde",
+    "out_dir": "results/bde_run",
+    "quick": true,
+    "quick_samples": 500,
+    "models": [
+      "gsc-bc",
+      "gsc-ca",
+      "painn-ds",
+      "painn-st"
+    ],
+    "hidden": 128,
+    "layers": 6,
+    "num_heads": 4,
+    "num_rbf": 64,
+    "cutoff": 12.0,
+    "readout": "add",
+    "dropout": 0.1,
+    "equalize_params": "smaller",
+    "epochs": 5,
+    "patience": 10,
+    "batch_size": 4,
+    "lr": 0.0001,
+    "seeds": 1,
+    "seed_offset": 0,
+    "max_conformers": 4,
+    "train_ratio": 0.7,
+    "val_ratio": 0.1,
+    "split_seed": 0
+  },
+  "models": {
+    "gsc-bc": "GraphSetConv-PaiNN-Broadcast",
+    "gsc-ca": "GraphSetConv-PaiNN-CrossAttn",
+    "painn-ds": "PaiNN+DeepSets",
+    "painn-st": "PaiNN+SetTransformer"
+  },
+  "model_param_counts": {
+    "painn-ds": 3059969,
+    "painn-st": 3325697,
+    "gsc-bc": 3020365,
+    "gsc-ca": 3191861
+  },
+  "model_hidden_dims": {
+    "painn-ds": 128,
+    "painn-st": 128,
+    "gsc-bc": 96,
+    "gsc-ca": 92
+  },
+  "split_sizes": {
+    "train": 350,
+    "val": 50,
+    "test": 100
+  },
+  "target_stats": {
+    "mean": -19.41798210144043,
+    "std": 23.688772201538086
+  },
+  "env": {
+    "python": "3.14.4",
+    "torch": "2.10.0+cu128",
+    "platform": "Linux-7.0.2-2-cachyos-x86_64-with-glibc2.43",
+    "cuda": false,
+    "cuda_device": null
+  }
+}

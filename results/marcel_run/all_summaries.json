@@ -1,0 +1,119 @@
+{
+  "kraken": {
+    "dataset": "kraken",
+    "metric": "MAE",
+    "per_model": {
+      "gsc-bc": {
+        "hidden": 128,
+        "params": 1382789,
+        "target_names": [
+          "sterimol_B5"
+        ],
+        "per_target_mean": [
+          0.4198019504547119
+        ],
+        "per_target_std": [
+          0.0
+        ],
+        "per_target_ci95": [
+          NaN
+        ],
+        "overall_mean": 0.4198019504547119,
+        "overall_ci95": NaN,
+        "scores": [
+          0.4198019504547119
+        ],
+        "wall_seconds_mean": 201.22875380516052
+      },
+      "gsc-ca": {
+        "hidden": 128,
+        "params": 1581701,
+        "target_names": [
+          "sterimol_B5"
+        ],
+        "per_target_mean": [
+          0.471569687128067
+        ],
+        "per_target_std": [
+          0.0
+        ],
+        "per_target_ci95": [
+          NaN
+        ],
+        "overall_mean": 0.471569687128067,
+        "overall_ci95": NaN,
+        "scores": [
+          0.471569687128067
+        ],
+        "wall_seconds_mean": 208.9330759048462
+      },
+      "painn-ds": {
+        "hidden": 128,
+        "params": 802817,
+        "target_names": [
+          "sterimol_B5"
+        ],
+        "per_target_mean": [
+          0.44825199246406555
+        ],
+        "per_target_std": [
+          0.0
+        ],
+        "per_target_ci95": [
+          NaN
+        ],
+        "overall_mean": 0.44825199246406555,
+        "overall_ci95": NaN,
+        "scores": [
+          0.44825199246406555
+        ],
+        "wall_seconds_mean": 165.63267517089844
+      },
+      "painn-st": {
+        "hidden": 128,
+        "params": 935681,
+        "target_names": [
+          "sterimol_B5"
+        ],
+        "per_target_mean": [
+          0.40831926465034485
+        ],
+        "per_target_std": [
+          0.0
+        ],
+        "per_target_ci95": [
+          NaN
+        ],
+        "overall_mean": 0.40831926465034485,
+        "overall_ci95": NaN,
+        "scores": [
+          0.40831926465034485
+        ],
+        "wall_seconds_mean": 192.55823516845703
+      },
+      "painn-bp": {
+        "hidden": 128,
+        "params": 769793,
+        "target_names": [
+          "sterimol_B5"
+        ],
+        "per_target_mean": [
+          0.4290725290775299
+        ],
+        "per_target_std": [
+          0.0
+        ],
+        "per_target_ci95": [
+          NaN
+        ],
+        "overall_mean": 0.4290725290775299,
+        "overall_ci95": NaN,
+        "scores": [
+          0.4290725290775299
+        ],
+        "wall_seconds_mean": 170.7889199256897
+      }
+    },
+    "pairwise": {}
+  }
+}

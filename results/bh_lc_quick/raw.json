@@ -1,0 +1,180 @@
+{
+  "summary_by_fraction": {
+    "0.7": {
+      "train_size": 2718,
+      "target_size": 2768,
+      "per_model": {
+        "gsc-v1-ca": {
+          "mae": {
+            "mean": 9.86979866027832,
+            "ci95": NaN,
+            "scores": [
+              9.86979866027832
+            ]
+          },
+          "rmse": {
+            "mean": 13.972369194030762,
+            "ci95": NaN,
+            "scores": [
+              13.972369194030762
+            ]
+          },
+          "r2": {
+            "mean": 0.7404921081738463,
+            "ci95": NaN,
+            "scores": [
+              0.7404921081738463
+            ]
+          },
+          "params": 139484,
+          "hidden": 44
+        },
+        "gsc-v2-ca": {
+          "mae": {
+            "mean": 9.16553020477295,
+            "ci95": NaN,
+            "scores": [
+              9.16553020477295
+            ]
+          },
+          "rmse": {
+            "mean": 13.303539276123047,
+            "ci95": NaN,
+            "scores": [
+              13.303539276123047
+            ]
+          },
+          "r2": {
+            "mean": 0.7647417371011331,
+            "ci95": NaN,
+            "scores": [
+              0.7647417371011331
+            ]
+          },
+          "params": 135884,
+          "hidden": 40
+        },
+        "gcn-ds": {
+          "mae": {
+            "mean": 17.28632926940918,
+            "ci95": NaN,
+            "scores": [
+              17.28632926940918
+            ]
+          },
+          "rmse": {
+            "mean": 21.551713943481445,
+            "ci95": NaN,
+            "scores": [
+              21.551713943481445
+            ]
+          },
+          "r2": {
+            "mean": 0.3825893179912051,
+            "ci95": NaN,
+            "scores": [
+              0.3825893179912051
+            ]
+          },
+          "params": 134657,
+          "hidden": 128
+        },
+        "gcn-st": {
+          "mae": {
+            "mean": 16.616762161254883,
+            "ci95": NaN,
+            "scores": [
+              16.616762161254883
+            ]
+          },
+          "rmse": {
+            "mean": 21.416366577148438,
+            "ci95": NaN,
+            "scores": [
+              21.416366577148438
+            ]
+          },
+          "r2": {
+            "mean": 0.39031985078562015,
+            "ci95": NaN,
+            "scores": [
+              0.39031985078562015
+            ]
+          },
+          "params": 267521,
+          "hidden": 128
+        }
+      }
+    }
+  },
+  "all_rows": [
+    {
+      "protocol": "train_frac_0.700",
+      "model_key": "gsc-v1-ca",
+      "model_name": "GraphSetConv-V1",
+      "seed": 0,
+      "hidden": 44,
+      "params": 139484,
+      "rmse": 13.972369194030762,
+      "mae": 9.86979866027832,
+      "r2": 0.7404921081738463,
+      "wall_seconds": 65.13,
+      "train_fraction": 0.7,
+      "train_size": 2718,
+      "val_size": 50
+    },
+    {
+      "protocol": "train_frac_0.700",
+      "model_key": "gsc-v2-ca",
+      "model_name": "GraphSetConv-V2-CrossAttn",
+      "seed": 0,
+      "hidden": 40,
+      "params": 135884,
+      "rmse": 13.303539276123047,
+      "mae": 9.16553020477295,
+      "r2": 0.7647417371011331,
+      "wall_seconds": 90.1,
+      "train_fraction": 0.7,
+      "train_size": 2718,
+      "val_size": 50
+    },
+    {
+      "protocol": "train_frac_0.700",
+      "model_key": "gcn-ds",
+      "model_name": "GCN+DeepSets",
+      "seed": 0,
+      "hidden": 128,
+      "params": 134657,
+      "rmse": 21.551713943481445,
+      "mae": 17.28632926940918,
+      "r2": 0.3825893179912051,
+      "wall_seconds": 23.68,
+      "train_fraction": 0.7,
+      "train_size": 2718,
+      "val_size": 50
+    },
+    {
+      "protocol": "train_frac_0.700",
+      "model_key": "gcn-st",
+      "model_name": "GCN+SetTransformer",
+      "seed": 0,
+      "hidden": 128,
+      "params": 267521,
+      "rmse": 21.416366577148438,
+      "mae": 16.616762161254883,
+      "r2": 0.39031985078562015,
+      "wall_seconds": 34.33,
+      "train_fraction": 0.7,
+      "train_size": 2718,
+      "val_size": 50
+    }
+  ],
+  "config": {
+    "fractions": [
+      0.7
+    ],
+    "n_full": 3955,
+    "n_test": 1187,
+    "n_pool": 2768
+  }
+}

@@ -1,0 +1,13 @@
+dataset,K,model_key,model_name,seed,hidden,non_emb_params,metric,metric_name,wall_seconds
+ppi_bp,1,gsc-bc,GraphSetConv-Broadcast,0,16,26875,0.4625,acc,21.39
+ppi_bp,1,gsc-ca,GraphSetConv-CrossAttn,0,16,31547,0.4875,acc,24.81
+ppi_bp,1,gcn-ds,GCN+DeepSets,0,64,46983,0.25625,acc,13.97
+ppi_bp,1,gcn-st,GCN+SetTransformer,0,64,63815,0.33125,acc,14.89
+ppi_bp,4,gsc-bc,GraphSetConv-Broadcast,0,16,26875,0.53125,acc,38.19
+ppi_bp,4,gsc-ca,GraphSetConv-CrossAttn,0,16,31547,0.4875,acc,41.44
+ppi_bp,4,gcn-ds,GCN+DeepSets,0,64,46983,0.2375,acc,27.44
+ppi_bp,4,gcn-st,GCN+SetTransformer,0,64,63815,0.2875,acc,27.46
+ppi_bp,8,gsc-bc,GraphSetConv-Broadcast,0,16,26875,0.5125,acc,54.6
+ppi_bp,8,gsc-ca,GraphSetConv-CrossAttn,0,16,31547,0.51875,acc,63.17
+ppi_bp,8,gcn-ds,GCN+DeepSets,0,64,46983,0.30625,acc,47.52
+ppi_bp,8,gcn-st,GCN+SetTransformer,0,64,63815,0.325,acc,48.98

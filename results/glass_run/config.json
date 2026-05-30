@@ -1,0 +1,73 @@
+{
+  "args": {
+    "device": "cpu",
+    "data_root": "data/glass",
+    "out_dir": "results/glass_run",
+    "quick": true,
+    "dataset": "em_user",
+    "models": [
+      "gsc-bc",
+      "gsc-ca",
+      "gcn-ds",
+      "gcn-st"
+    ],
+    "k_sweep": [
+      1,
+      4,
+      8
+    ],
+    "hidden": 64,
+    "layers": 4,
+    "num_heads": 4,
+    "dropout": 0.1,
+    "emb_dim": 64,
+    "equalize_params": "smaller",
+    "steps": 800,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "sets_per_batch": 8,
+    "eval_every": 100,
+    "eval_repeats": 2,
+    "test_repeats": 2,
+    "seeds": 1,
+    "seed_offset": 0
+  },
+  "models": {
+    "gsc-bc": "GraphSetConv-Broadcast",
+    "gsc-ca": "GraphSetConv-CrossAttn",
+    "gcn-ds": "GCN+DeepSets",
+    "gcn-st": "GCN+SetTransformer"
+  },
+  "model_hidden_dims": {
+    "gcn-ds": 64,
+    "gcn-st": 64,
+    "gsc-ca": 16,
+    "gsc-bc": 16
+  },
+  "model_non_emb_params": {
+    "gsc-bc": 26807,
+    "gsc-ca": 31479,
+    "gcn-ds": 46723,
+    "gcn-st": 63555
+  },
+  "dataset_info": {
+    "name": "em_user",
+    "num_nodes": 57333,
+    "num_edges_undirected": 4573417,
+    "num_subgraphs": 324,
+    "num_classes": 2,
+    "multilabel": false,
+    "splits": {
+      "train": 226,
+      "val": 49,
+      "test": 49
+    }
+  },
+  "env": {
+    "python": "3.14.4",
+    "torch": "2.10.0+cu128",
+    "platform": "Linux-7.0.3-1-cachyos-x86_64-with-glibc2.43",
+    "cuda": false,
+    "cuda_device": null
+  }
+}

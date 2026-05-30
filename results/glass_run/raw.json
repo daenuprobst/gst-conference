@@ -1,0 +1,301 @@
+{
+  "summary": {
+    "dataset": "ppi_bp",
+    "multilabel": false,
+    "by_k": {
+      "1": {
+        "per_model": {
+          "gsc-bc": {
+            "mean": 0.4625,
+            "ci95": NaN,
+            "scores": [
+              0.4625
+            ],
+            "hidden": 16,
+            "params": 26875,
+            "wall_seconds_mean": 21.38962984085083
+          },
+          "gsc-ca": {
+            "mean": 0.4875,
+            "ci95": NaN,
+            "scores": [
+              0.4875
+            ],
+            "hidden": 16,
+            "params": 31547,
+            "wall_seconds_mean": 24.807002305984497
+          },
+          "gcn-ds": {
+            "mean": 0.25625,
+            "ci95": NaN,
+            "scores": [
+              0.25625
+            ],
+            "hidden": 64,
+            "params": 46983,
+            "wall_seconds_mean": 13.968509912490845
+          },
+          "gcn-st": {
+            "mean": 0.33125,
+            "ci95": NaN,
+            "scores": [
+              0.33125
+            ],
+            "hidden": 64,
+            "params": 63815,
+            "wall_seconds_mean": 14.88614296913147
+          }
+        },
+        "pairwise": {}
+      },
+      "4": {
+        "per_model": {
+          "gsc-bc": {
+            "mean": 0.53125,
+            "ci95": NaN,
+            "scores": [
+              0.53125
+            ],
+            "hidden": 16,
+            "params": 26875,
+            "wall_seconds_mean": 38.194804191589355
+          },
+          "gsc-ca": {
+            "mean": 0.4875,
+            "ci95": NaN,
+            "scores": [
+              0.4875
+            ],
+            "hidden": 16,
+            "params": 31547,
+            "wall_seconds_mean": 41.44224786758423
+          },
+          "gcn-ds": {
+            "mean": 0.2375,
+            "ci95": NaN,
+            "scores": [
+              0.2375
+            ],
+            "hidden": 64,
+            "params": 46983,
+            "wall_seconds_mean": 27.441234827041626
+          },
+          "gcn-st": {
+            "mean": 0.2875,
+            "ci95": NaN,
+            "scores": [
+              0.2875
+            ],
+            "hidden": 64,
+            "params": 63815,
+            "wall_seconds_mean": 27.458933115005493
+          }
+        },
+        "pairwise": {}
+      },
+      "8": {
+        "per_model": {
+          "gsc-bc": {
+            "mean": 0.5125,
+            "ci95": NaN,
+            "scores": [
+              0.5125
+            ],
+            "hidden": 16,
+            "params": 26875,
+            "wall_seconds_mean": 54.598321199417114
+          },
+          "gsc-ca": {
+            "mean": 0.51875,
+            "ci95": NaN,
+            "scores": [
+              0.51875
+            ],
+            "hidden": 16,
+            "params": 31547,
+            "wall_seconds_mean": 63.1726553440094
+          },
+          "gcn-ds": {
+            "mean": 0.30625,
+            "ci95": NaN,
+            "scores": [
+              0.30625
+            ],
+            "hidden": 64,
+            "params": 46983,
+            "wall_seconds_mean": 47.52382135391235
+          },
+          "gcn-st": {
+            "mean": 0.325,
+            "ci95": NaN,
+            "scores": [
+              0.325
+            ],
+            "hidden": 64,
+            "params": 63815,
+            "wall_seconds_mean": 48.979209661483765
+          }
+        },
+        "pairwise": {}
+      }
+    }
+  },
+  "flat_rows": [
+    {
+      "dataset": "ppi_bp",
+      "K": 1,
+      "model_key": "gsc-bc",
+      "model_name": "GraphSetConv-Broadcast",
+      "seed": 0,
+      "hidden": 16,
+      "non_emb_params": 26875,
+      "metric": 0.4625,
+      "metric_name": "acc",
+      "wall_seconds": 21.39
+    },
+    {
+      "dataset": "ppi_bp",
+      "K": 1,
+      "model_key": "gsc-ca",
+      "model_name": "GraphSetConv-CrossAttn",
+      "seed": 0,
+      "hidden": 16,
+      "non_emb_params": 31547,
+      "metric": 0.4875,
+      "metric_name": "acc",
+      "wall_seconds": 24.81
+    },
+    {
+      "dataset": "ppi_bp",
+      "K": 1,
+      "model_key": "gcn-ds",
+      "model_name": "GCN+DeepSets",
+      "seed": 0,
+      "hidden": 64,
+      "non_emb_params": 46983,
+      "metric": 0.25625,
+      "metric_name": "acc",
+      "wall_seconds": 13.97
+    },
+    {
+      "dataset": "ppi_bp",
+      "K": 1,
+      "model_key": "gcn-st",
+      "model_name": "GCN+SetTransformer",
+      "seed": 0,
+      "hidden": 64,
+      "non_emb_params": 63815,
+      "metric": 0.33125,
+      "metric_name": "acc",
+      "wall_seconds": 14.89
+    },
+    {
+      "dataset": "ppi_bp",
+      "K": 4,
+      "model_key": "gsc-bc",
+      "model_name": "GraphSetConv-Broadcast",
+      "seed": 0,
+      "hidden": 16,
+      "non_emb_params": 26875,
+      "metric": 0.53125,
+      "metric_name": "acc",
+      "wall_seconds": 38.19
+    },
+    {
+      "dataset": "ppi_bp",
+      "K": 4,
+      "model_key": "gsc-ca",
+      "model_name": "GraphSetConv-CrossAttn",
+      "seed": 0,
+      "hidden": 16,
+      "non_emb_params": 31547,
+      "metric": 0.4875,
+      "metric_name": "acc",
+      "wall_seconds": 41.44
+    },
+    {
+      "dataset": "ppi_bp",
+      "K": 4,
+      "model_key": "gcn-ds",
+      "model_name": "GCN+DeepSets",
+      "seed": 0,
+      "hidden": 64,
+      "non_emb_params": 46983,
+      "metric": 0.2375,
+      "metric_name": "acc",
+      "wall_seconds": 27.44
+    },
+    {
+      "dataset": "ppi_bp",
+      "K": 4,
+      "model_key": "gcn-st",
+      "model_name": "GCN+SetTransformer",
+      "seed": 0,
+      "hidden": 64,
+      "non_emb_params": 63815,
+      "metric": 0.2875,
+      "metric_name": "acc",
+      "wall_seconds": 27.46
+    },
+    {
+      "dataset": "ppi_bp",
+      "K": 8,
+      "model_key": "gsc-bc",
+      "model_name": "GraphSetConv-Broadcast",
+      "seed": 0,
+      "hidden": 16,
+      "non_emb_params": 26875,
+      "metric": 0.5125,
+      "metric_name": "acc",
+      "wall_seconds": 54.6
+    },
+    {
+      "dataset": "ppi_bp",
+      "K": 8,
+      "model_key": "gsc-ca",
+      "model_name": "GraphSetConv-CrossAttn",
+      "seed": 0,
+      "hidden": 16,
+      "non_emb_params": 31547,
+      "metric": 0.51875,
+      "metric_name": "acc",
+      "wall_seconds": 63.17
+    },
+    {
+      "dataset": "ppi_bp",
+      "K": 8,
+      "model_key": "gcn-ds",
+      "model_name": "GCN+DeepSets",
+      "seed": 0,
+      "hidden": 64,
+      "non_emb_params": 46983,
+      "metric": 0.30625,
+      "metric_name": "acc",
+      "wall_seconds": 47.52
+    },
+    {
+      "dataset": "ppi_bp",
+      "K": 8,
+      "model_key": "gcn-st",
+      "model_name": "GCN+SetTransformer",
+      "seed": 0,
+      "hidden": 64,
+      "non_emb_params": 63815,
+      "metric": 0.325,
+      "metric_name": "acc",
+      "wall_seconds": 48.98
+    }
+  ],
+  "hiddens": {
+    "gcn-st": 64,
+    "gcn-ds": 64,
+    "gsc-bc": 16,
+    "gsc-ca": 16
+  },
+  "non_emb_params": {
+    "gsc-bc": 26875,
+    "gsc-ca": 31547,
+    "gcn-ds": 46983,
+    "gcn-st": 63815
+  }
+}

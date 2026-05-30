@@ -1,0 +1,78 @@
+{
+  "args": {
+    "device": "cpu",
+    "data_root": "data/uspto",
+    "out_dir": "results/uspto_run",
+    "quick": true,
+    "models": [
+      "gsc-bc",
+      "gsc-ca",
+      "gcn-ds",
+      "gcn-st"
+    ],
+    "hidden": 128,
+    "layers": 3,
+    "num_heads": 4,
+    "dropout": 0.1,
+    "equalize_params": "smaller",
+    "epochs": 500,
+    "patience": 20,
+    "batch_size": 16,
+    "lr": 0.001,
+    "seeds": 1,
+    "seed_offset": 0,
+    "train_ratio": 0.7,
+    "val_ratio": 0.1,
+    "split_seed": 0,
+    "val_fraction_from_train": 0.1,
+    "feature_mode": "rich",
+    "max_reactions": 6000,
+    "no_stratified_subsample": false,
+    "max_atoms_per_reaction": 200,
+    "train_size_ablation": false,
+    "train_size_fractions": [
+      0.025,
+      0.05,
+      0.1,
+      0.2,
+      0.3,
+      0.5,
+      0.7
+    ],
+    "train_size_min_val": 50
+  },
+  "models": {
+    "gsc-bc": "GraphSetConv-Broadcast",
+    "gsc-ca": "GraphSetConv-CrossAttn",
+    "gcn-ds": "GCN+DeepSets",
+    "gcn-st": "GCN+SetTransformer"
+  },
+  "model_param_counts": {
+    "gsc-bc": 131212,
+    "gsc-ca": 146904,
+    "gcn-ds": 137857,
+    "gcn-st": 270721
+  },
+  "model_hidden_dims": {
+    "gsc-bc": 56,
+    "gsc-ca": 52,
+    "gcn-ds": 128,
+    "gcn-st": 128
+  },
+  "split_sizes": {
+    "train": 4190,
+    "val": 599,
+    "test": 1197
+  },
+  "target_stats": {
+    "mean": 64.34077453613281,
+    "std": 25.597213745117188
+  },
+  "env": {
+    "python": "3.14.4",
+    "torch": "2.10.0+cu128",
+    "platform": "Linux-7.0.2-2-cachyos-x86_64-with-glibc2.43",
+    "cuda": false,
+    "cuda_device": null
+  }
+}

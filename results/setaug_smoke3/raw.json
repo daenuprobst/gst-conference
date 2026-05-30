@@ -1,0 +1,115 @@
+{
+  "per_cond": {
+    "H": {
+      "name": "GST + node-del subgraphs",
+      "params": 43335,
+      "test_acc_seeds": [
+        0.27
+      ],
+      "test_f1_seeds": [
+        0.1062992125984252
+      ],
+      "best_val_seeds": [
+        0.24
+      ],
+      "acc_mean_ci": [
+        0.27,
+        NaN
+      ],
+      "f1_mean_ci": [
+        0.1062992125984252,
+        NaN
+      ],
+      "best_val_mean": 0.24,
+      "total_train_seconds": 2.0749714374542236
+    },
+    "I": {
+      "name": "GCN+DS + node-del subgraphs",
+      "params": 7044,
+      "test_acc_seeds": [
+        0.325
+      ],
+      "test_f1_seeds": [
+        0.21107851008729464
+      ],
+      "best_val_seeds": [
+        0.31
+      ],
+      "acc_mean_ci": [
+        0.325,
+        NaN
+      ],
+      "f1_mean_ci": [
+        0.21107851008729464,
+        NaN
+      ],
+      "best_val_mean": 0.31,
+      "total_train_seconds": 1.2397310733795166
+    }
+  },
+  "comparisons": [
+    {
+      "a": "H",
+      "b": "I",
+      "mean_diff": -0.05499999999999999,
+      "dz": NaN,
+      "p": NaN,
+      "p_adj": 1.0,
+      "reject": false
+    }
+  ],
+  "rows": [
+    {
+      "condition": "H",
+      "seed": 0,
+      "test_acc": 0.27,
+      "test_f1": 0.1062992125984252,
+      "best_val_acc": 0.24,
+      "params": 43335,
+      "elapsed_s": 2.0749714374542236,
+      "epochs_run": 4
+    },
+    {
+      "condition": "I",
+      "seed": 0,
+      "test_acc": 0.325,
+      "test_f1": 0.21107851008729464,
+      "best_val_acc": 0.31,
+      "params": 7044,
+      "elapsed_s": 1.2397310733795166,
+      "epochs_run": 4
+    }
+  ],
+  "args": {
+    "device": "cpu",
+    "out_dir": "results/setaug_smoke3",
+    "quick": true,
+    "n_train": 200,
+    "n_val": 100,
+    "n_test": 200,
+    "label_noise": 0.08,
+    "data_seed": 0,
+    "hidden": 32,
+    "layers": 3,
+    "num_heads": 4,
+    "dropout": 0.1,
+    "epochs": 5,
+    "patience": 3,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "batch_size_single": 32,
+    "batch_size_sets": 8,
+    "batch_size_subgraphs": 8,
+    "k_subgraphs": 8,
+    "k": 4,
+    "k_min": 1,
+    "supcon_weight": 0.5,
+    "supcon_temp": 0.1,
+    "seeds": 1,
+    "seed_offset": 0,
+    "conditions": [
+      "H",
+      "I"
+    ]
+  }
+}

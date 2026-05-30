@@ -1,0 +1,81 @@
+{
+  "args": {
+    "device": "cpu",
+    "data_root": "data/dream_olfaction",
+    "out_dir": "results/olfaction_smoke",
+    "quick": true,
+    "models": [
+      "gcn-ds",
+      "gcn-st",
+      "gsc-bc",
+      "gsc-ca"
+    ],
+    "framings": [
+      "siamese",
+      "joint"
+    ],
+    "feature_mode": "rich",
+    "max_mixture_size": null,
+    "min_mixture_size": 2,
+    "hidden": 32,
+    "layers": 2,
+    "num_heads": 4,
+    "dropout": 0.1,
+    "equalize_params": "none",
+    "epochs": 30,
+    "patience": 5,
+    "batch_size": 4,
+    "lr": 0.001,
+    "seeds": 1,
+    "seed_offset": 0,
+    "split": "random",
+    "train_ratio": 0.85,
+    "val_ratio": 0.1,
+    "split_seed": 0,
+    "log_every_step": 0,
+    "log_every_epoch": 1
+  },
+  "models": {
+    "gcn-ds": "GCN+DeepSets",
+    "gcn-st": "GCN+SetTransformer",
+    "gsc-bc": "GraphSetConv-Broadcast",
+    "gsc-ca": "GraphSetConv-CrossAttn"
+  },
+  "param_counts": {
+    "gcn-ds__siamese": 12866,
+    "gcn-st__siamese": 21506,
+    "gsc-bc__siamese": 34244,
+    "gsc-ca__siamese": 42820,
+    "gcn-ds__joint": 9794,
+    "gcn-st__joint": 18434,
+    "gsc-bc__joint": 31172,
+    "gsc-ca__joint": 39748
+  },
+  "hiddens_by_pair": {
+    "gcn-ds__siamese": 32,
+    "gcn-st__siamese": 32,
+    "gsc-bc__siamese": 32,
+    "gsc-ca__siamese": 32,
+    "gcn-ds__joint": 32,
+    "gcn-st__joint": 32,
+    "gsc-bc__joint": 32,
+    "gsc-ca__joint": 32
+  },
+  "equalize_params": "none",
+  "split_sizes": {
+    "train": 527,
+    "val": 59,
+    "test": 103
+  },
+  "similarity_stats": {
+    "mean": 0.562028169631958,
+    "std": 0.15032409131526947
+  },
+  "env": {
+    "python": "3.14.5",
+    "torch": "2.10.0+cu128",
+    "platform": "Linux-7.0.9-1-cachyos-x86_64-with-glibc2.43",
+    "cuda": false,
+    "cuda_device": null
+  }
+}

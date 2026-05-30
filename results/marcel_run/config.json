@@ -1,0 +1,53 @@
+{
+  "args": {
+    "device": "cpu",
+    "data_root": "data",
+    "out_dir": "results/marcel_run",
+    "quick": true,
+    "datasets": [
+      "kraken"
+    ],
+    "kraken_target": "sterimol_B5",
+    "models": [
+      "gsc-bc",
+      "gsc-ca",
+      "painn-ds",
+      "painn-st",
+      "painn-bp"
+    ],
+    "hidden": 128,
+    "layers": 3,
+    "num_heads": 4,
+    "num_rbf": 32,
+    "cutoff": 5.0,
+    "dropout": 0.1,
+    "mode": "parallel",
+    "equalize_params": "none",
+    "epochs": 10,
+    "patience": 5,
+    "batch_size": 4,
+    "lr": 0.0001,
+    "seeds": 1,
+    "seed_offset": 0,
+    "max_conformers": 4,
+    "log_every_step": 1,
+    "log_every_epoch": 1,
+    "train_ratio": 0.7,
+    "val_ratio": 0.1,
+    "split_seed": 0
+  },
+  "models": {
+    "gsc-bc": "GraphSetConv-PaiNN-Broadcast",
+    "gsc-ca": "GraphSetConv-PaiNN-CrossAttn",
+    "painn-ds": "PaiNN+DeepSets",
+    "painn-st": "PaiNN+SetTransformer",
+    "painn-bp": "PaiNN+BoltzmannPool"
+  },
+  "env": {
+    "python": "3.14.4",
+    "torch": "2.10.0+cu128",
+    "platform": "Linux-7.0.2-2-cachyos-x86_64-with-glibc2.43",
+    "cuda": false,
+    "cuda_device": null
+  }
+}

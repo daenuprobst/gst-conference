@@ -1,0 +1,180 @@
+nohup: ignoring input
+=== synth_benchmark.py ===
+out-dir = results/synth_run
+device  = cpu
+preset  = default (N in [12,25], p in [0.10,0.25])
+models  = ['GraphSetConv-CrossAttn', 'GraphSetConv-Broadcast', 'GCN+DeepSets', 'GCN+SetTransformer']
+seeds   = 5
+steps   = 2500
+
+[equalize-params=smaller]
+  GraphSetConv-CrossAttn       hidden=  28  params=  39,175
+  GraphSetConv-Broadcast       hidden=  32  params=  42,019
+  GCN+DeepSets                 hidden=  64  params=  38,081
+  GCN+SetTransformer           hidden=  64  params=  71,745
+
+10 cells:
+  - ring_K1
+  - ring_K2
+  - ring_K3
+  - ball_K0
+  - ball_K1
+  - ball_K2
+  - distance_K5
+  - ring_extrapolate_K2_set8
+  - ring_extrapolate_K2_set10
+  - ring_extrapolate_K2_set12
+
+--- Label-density audit (default graphs, n=400 samples) ---
+  ring_K1                           pos density=0.1347  frac graphs w/ anchor=0.271
+  ring_K2                           pos density=0.1193  frac graphs w/ anchor=0.271
+  ring_K3                           pos density=0.0230  frac graphs w/ anchor=0.271
+  ball_K0                           pos density=0.0207  frac graphs w/ anchor=0.271
+  ball_K1                           pos density=0.1553  frac graphs w/ anchor=0.271
+  ball_K2                           pos density=0.2746  frac graphs w/ anchor=0.271
+  distance_K5                       target mean=3.95  std=1.65
+  ring_extrapolate_K2_set8          pos density=0.0824  frac graphs w/ anchor=0.172
+  ring_extrapolate_K2_set10         pos density=0.0707  frac graphs w/ anchor=0.143
+  ring_extrapolate_K2_set12         pos density=0.0589  frac graphs w/ anchor=0.116
+
+========== cell: ring_K1 ==========
+  [GraphSetConv-CrossAttn  ] seed= 0  score=0.9999  (90.5s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 1  score=1.0000  (91.6s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 2  score=1.0000  (90.6s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 3  score=1.0000  (89.1s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 4  score=1.0000  (88.3s, 39,175 params)
+  [GraphSetConv-Broadcast  ] seed= 0  score=0.9998  (69.4s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 1  score=0.9998  (70.6s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 2  score=1.0000  (68.0s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 3  score=1.0000  (68.3s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 4  score=1.0000  (82.0s, 42,019 params)
+  [GCN+DeepSets            ] seed= 0  score=0.9220  (55.7s, 38,081 params)
+  [GCN+DeepSets            ] seed= 1  score=0.9279  (66.1s, 38,081 params)
+  [GCN+DeepSets            ] seed= 2  score=0.9141  (89.1s, 38,081 params)
+  [GCN+DeepSets            ] seed= 3  score=0.9224  (76.9s, 38,081 params)
+  [GCN+DeepSets            ] seed= 4  score=0.9165  (49.8s, 38,081 params)
+  [GCN+SetTransformer      ] seed= 0  score=0.9476  (55.2s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 1  score=0.9535  (54.2s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 2  score=0.9513  (54.8s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 3  score=0.9462  (55.0s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 4  score=0.9364  (67.2s, 71,745 params)
+
+========== cell: ring_K2 ==========
+  [GraphSetConv-CrossAttn  ] seed= 0  score=0.9723  (98.5s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 1  score=0.9777  (91.7s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 2  score=0.9754  (111.4s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 3  score=0.9607  (105.8s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 4  score=0.9749  (100.1s, 39,175 params)
+  [GraphSetConv-Broadcast  ] seed= 0  score=0.9721  (87.2s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 1  score=0.9754  (83.8s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 2  score=0.9784  (84.2s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 3  score=0.9780  (85.5s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 4  score=0.9782  (73.9s, 42,019 params)
+  [GCN+DeepSets            ] seed= 0  score=0.8584  (58.5s, 38,081 params)
+  [GCN+DeepSets            ] seed= 1  score=0.8497  (51.9s, 38,081 params)
+  [GCN+DeepSets            ] seed= 2  score=0.8387  (54.3s, 38,081 params)
+  [GCN+DeepSets            ] seed= 3  score=0.8514  (57.8s, 38,081 params)
+  [GCN+DeepSets            ] seed= 4  score=0.8339  (57.2s, 38,081 params)
+  [GCN+SetTransformer      ] seed= 0  score=0.8891  (63.4s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 1  score=0.8828  (73.9s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 2  score=0.8791  (67.3s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 3  score=0.8825  (59.9s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 4  score=0.8705  (64.4s, 71,745 params)
+
+========== cell: ring_K3 ==========
+  [GraphSetConv-CrossAttn  ] seed= 0  score=0.4546  (107.5s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 1  score=0.3552  (100.2s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 2  score=0.4317  (92.3s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 3  score=0.4927  (110.7s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 4  score=0.3694  (102.6s, 39,175 params)
+  [GraphSetConv-Broadcast  ] seed= 0  score=0.4336  (74.0s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 1  score=0.4848  (97.7s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 2  score=0.4525  (84.4s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 3  score=0.4457  (79.5s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 4  score=0.4857  (76.6s, 42,019 params)
+  [GCN+DeepSets            ] seed= 0  score=0.3541  (57.6s, 38,081 params)
+  [GCN+DeepSets            ] seed= 1  score=0.3317  (59.6s, 38,081 params)
+  [GCN+DeepSets            ] seed= 2  score=0.3484  (58.9s, 38,081 params)
+  [GCN+DeepSets            ] seed= 3  score=0.3532  (66.0s, 38,081 params)
+  [GCN+DeepSets            ] seed= 4  score=0.3173  (53.3s, 38,081 params)
+  [GCN+SetTransformer      ] seed= 0  score=0.3694  (63.0s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 1  score=0.3756  (57.9s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 2  score=0.3711  (64.2s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 3  score=0.3872  (62.7s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 4  score=0.3660  (62.5s, 71,745 params)
+
+========== cell: ball_K0 ==========
+  [GraphSetConv-CrossAttn  ] seed= 0  score=0.9979  (107.0s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 1  score=0.9998  (102.6s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 2  score=0.9997  (105.9s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 3  score=1.0000  (104.3s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 4  score=0.9999  (101.8s, 39,175 params)
+  [GraphSetConv-Broadcast  ] seed= 0  score=0.9999  (89.4s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 1  score=1.0000  (69.7s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 2  score=1.0000  (75.9s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 3  score=0.9999  (78.5s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 4  score=0.9999  (70.9s, 42,019 params)
+  [GCN+DeepSets            ] seed= 0  score=0.8405  (56.0s, 38,081 params)
+  [GCN+DeepSets            ] seed= 1  score=0.8249  (57.8s, 38,081 params)
+  [GCN+DeepSets            ] seed= 2  score=0.8491  (52.2s, 38,081 params)
+  [GCN+DeepSets            ] seed= 3  score=0.8017  (58.7s, 38,081 params)
+  [GCN+DeepSets            ] seed= 4  score=0.8117  (66.2s, 38,081 params)
+  [GCN+SetTransformer      ] seed= 0  score=0.8682  (62.9s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 1  score=0.8723  (58.8s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 2  score=0.8963  (61.0s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 3  score=0.8928  (63.2s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 4  score=0.8668  (57.6s, 71,745 params)
+
+========== cell: ball_K1 ==========
+  [GraphSetConv-CrossAttn  ] seed= 0  score=1.0000  (106.7s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 1  score=1.0000  (104.8s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 2  score=1.0000  (97.9s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 3  score=1.0000  (104.3s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 4  score=1.0000  (98.5s, 39,175 params)
+  [GraphSetConv-Broadcast  ] seed= 0  score=1.0000  (78.0s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 1  score=0.9999  (72.0s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 2  score=1.0000  (81.3s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 3  score=1.0000  (85.1s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 4  score=0.9996  (79.5s, 42,019 params)
+  [GCN+DeepSets            ] seed= 0  score=0.9325  (60.2s, 38,081 params)
+  [GCN+DeepSets            ] seed= 1  score=0.9395  (59.9s, 38,081 params)
+  [GCN+DeepSets            ] seed= 2  score=0.9242  (64.5s, 38,081 params)
+  [GCN+DeepSets            ] seed= 3  score=0.9352  (59.7s, 38,081 params)
+  [GCN+DeepSets            ] seed= 4  score=0.9280  (102.7s, 38,081 params)
+  [GCN+SetTransformer      ] seed= 0  score=0.9547  (111.3s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 1  score=0.9530  (80.3s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 2  score=0.9637  (74.7s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 3  score=0.9569  (71.6s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 4  score=0.9460  (72.5s, 71,745 params)
+
+========== cell: ball_K2 ==========
+  [GraphSetConv-CrossAttn  ] seed= 0  score=0.9896  (113.2s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 1  score=0.9890  (100.9s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 2  score=0.9894  (110.9s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 3  score=0.9898  (95.5s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 4  score=0.9885  (113.2s, 39,175 params)
+  [GraphSetConv-Broadcast  ] seed= 0  score=0.9897  (72.3s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 1  score=0.9916  (97.2s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 2  score=0.9913  (83.1s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 3  score=0.9901  (71.3s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 4  score=0.9892  (72.2s, 42,019 params)
+  [GCN+DeepSets            ] seed= 0  score=0.9375  (62.7s, 38,081 params)
+  [GCN+DeepSets            ] seed= 1  score=0.9374  (58.0s, 38,081 params)
+  [GCN+DeepSets            ] seed= 2  score=0.9272  (58.9s, 38,081 params)
+  [GCN+DeepSets            ] seed= 3  score=0.9446  (60.1s, 38,081 params)
+  [GCN+DeepSets            ] seed= 4  score=0.9041  (58.8s, 38,081 params)
+  [GCN+SetTransformer      ] seed= 0  score=0.9304  (64.1s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 1  score=0.9464  (69.1s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 2  score=0.9515  (70.5s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 3  score=0.9535  (69.0s, 71,745 params)
+  [GCN+SetTransformer      ] seed= 4  score=0.9003  (67.9s, 71,745 params)
+
+========== cell: distance_K5 ==========
+  [GraphSetConv-CrossAttn  ] seed= 0  score=0.1058  (104.4s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 1  score=0.1083  (108.6s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 2  score=0.1235  (106.0s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 3  score=0.1121  (107.9s, 39,175 params)
+  [GraphSetConv-CrossAttn  ] seed= 4  score=0.1210  (101.7s, 39,175 params)
+  [GraphSetConv-Broadcast  ] seed= 0  score=0.1170  (82.0s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 1  score=0.1037  (75.2s, 42,019 params)
+  [GraphSetConv-Broadcast  ] seed= 2  score=0.0902  (84.3s, 42,019 params)

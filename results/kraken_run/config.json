@@ -1,0 +1,53 @@
+{
+  "args": {
+    "device": "cpu",
+    "data_root": "data/kraken",
+    "out_dir": "results/kraken_run",
+    "smoke": true,
+    "verbose": true,
+    "target": "sterimol_L",
+    "models": [
+      "gsc-bc",
+      "gsc-ca",
+      "p-ds",
+      "p-st",
+      "p-bz"
+    ],
+    "hidden": 128,
+    "layers": 4,
+    "num_heads": 4,
+    "num_rbf": 32,
+    "cutoff": 5.0,
+    "dropout": 0.0,
+    "epochs": 8,
+    "batch_size": 8,
+    "lr": 0.0005,
+    "weight_decay": 0.0001,
+    "eval_every": 1,
+    "seeds": 1,
+    "seed_offset": 0,
+    "split_seed": 0
+  },
+  "targets": [
+    "sterimol_L"
+  ],
+  "model_param_counts": {
+    "gsc-bc": 1764613,
+    "gsc-ca": 2029829,
+    "p-ds": 1035521,
+    "p-st": 1168385,
+    "p-bz": 1002497
+  },
+  "split_sizes": {
+    "train": 200,
+    "val": 25,
+    "test": 25
+  },
+  "env": {
+    "python": "3.14.4",
+    "torch": "2.10.0+cu128",
+    "platform": "Linux-7.0.9-1-cachyos-x86_64-with-glibc2.43",
+    "cuda": false,
+    "cuda_device": null
+  }
+}

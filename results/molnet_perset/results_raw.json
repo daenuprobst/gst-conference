@@ -1,0 +1,348 @@
+[
+  {
+    "dataset": "esol",
+    "K": 5,
+    "skipped": false,
+    "per_arch": {
+      "gcn-ds": {
+        "rmse": {
+          "mean": 6.68812894821167,
+          "ci95": NaN,
+          "values": [
+            6.68812894821167
+          ]
+        },
+        "mae": {
+          "mean": 6.01333475112915,
+          "ci95": NaN,
+          "values": [
+            6.01333475112915
+          ]
+        },
+        "pearson": {
+          "mean": 0.7757786512374878,
+          "ci95": NaN,
+          "values": [
+            0.7757786512374878
+          ]
+        },
+        "time_s_mean": 3.1504738529984024,
+        "params": 187266,
+        "hidden": 128
+      },
+      "gcn-st": {
+        "rmse": {
+          "mean": 7.104973793029785,
+          "ci95": NaN,
+          "values": [
+            7.104973793029785
+          ]
+        },
+        "mae": {
+          "mean": 6.128910541534424,
+          "ci95": NaN,
+          "values": [
+            6.128910541534424
+          ]
+        },
+        "pearson": {
+          "mean": 0.5157303214073181,
+          "ci95": NaN,
+          "values": [
+            0.5157303214073181
+          ]
+        },
+        "time_s_mean": 1.9132856220021495,
+        "params": 220930,
+        "hidden": 128
+      },
+      "gsc-bc": {
+        "rmse": {
+          "mean": 6.772756099700928,
+          "ci95": NaN,
+          "values": [
+            6.772756099700928
+          ]
+        },
+        "mae": {
+          "mean": 6.173277854919434,
+          "ci95": NaN,
+          "values": [
+            6.173277854919434
+          ]
+        },
+        "pearson": {
+          "mean": 0.8149251937866211,
+          "ci95": NaN,
+          "values": [
+            0.8149251937866211
+          ]
+        },
+        "time_s_mean": 16.63960585300083,
+        "params": 1178245,
+        "hidden": 128
+      },
+      "gsc-ca": {
+        "rmse": {
+          "mean": 7.305415153503418,
+          "ci95": NaN,
+          "values": [
+            7.305415153503418
+          ]
+        },
+        "mae": {
+          "mean": 6.640485763549805,
+          "ci95": NaN,
+          "values": [
+            6.640485763549805
+          ]
+        },
+        "pearson": {
+          "mean": 0.7771994471549988,
+          "ci95": NaN,
+          "values": [
+            0.7771994471549988
+          ]
+        },
+        "time_s_mean": 19.341120914003113,
+        "params": 1378309,
+        "hidden": 128
+      }
+    },
+    "flat_rows": [
+      {
+        "dataset": "esol",
+        "K": 5,
+        "model": "gcn-ds",
+        "model_display": "GCN+DeepSets",
+        "seed": 0,
+        "test_rmse": 6.68812894821167,
+        "test_mae": 6.01333475112915,
+        "test_pearson": 0.7757786512374878,
+        "time_s": 3.1504738529984024,
+        "params": 187266
+      },
+      {
+        "dataset": "esol",
+        "K": 5,
+        "model": "gcn-st",
+        "model_display": "GCN+SetTransformer",
+        "seed": 0,
+        "test_rmse": 7.104973793029785,
+        "test_mae": 6.128910541534424,
+        "test_pearson": 0.5157303214073181,
+        "time_s": 1.9132856220021495,
+        "params": 220930
+      },
+      {
+        "dataset": "esol",
+        "K": 5,
+        "model": "gsc-bc",
+        "model_display": "GraphSetConv-Broadcast",
+        "seed": 0,
+        "test_rmse": 6.772756099700928,
+        "test_mae": 6.173277854919434,
+        "test_pearson": 0.8149251937866211,
+        "time_s": 16.63960585300083,
+        "params": 1178245
+      },
+      {
+        "dataset": "esol",
+        "K": 5,
+        "model": "gsc-ca",
+        "model_display": "GraphSetConv-CrossAttn",
+        "seed": 0,
+        "test_rmse": 7.305415153503418,
+        "test_mae": 6.640485763549805,
+        "test_pearson": 0.7771994471549988,
+        "time_s": 19.341120914003113,
+        "params": 1378309
+      }
+    ],
+    "split_sizes": {
+      "train_sets": 180,
+      "val_sets": 22,
+      "test_sets": 22,
+      "train_mols": 900,
+      "val_mols": 110,
+      "test_mols": 110
+    },
+    "target_stats": {
+      "mean": -2.8722012042999268,
+      "std": 2.0596375465393066
+    }
+  },
+  {
+    "dataset": "esol",
+    "K": 10,
+    "skipped": false,
+    "per_arch": {
+      "gcn-ds": {
+        "rmse": {
+          "mean": 6.646442413330078,
+          "ci95": NaN,
+          "values": [
+            6.646442413330078
+          ]
+        },
+        "mae": {
+          "mean": 5.711822032928467,
+          "ci95": NaN,
+          "values": [
+            5.711822032928467
+          ]
+        },
+        "pearson": {
+          "mean": 0.6883357167243958,
+          "ci95": NaN,
+          "values": [
+            0.6883357167243958
+          ]
+        },
+        "time_s_mean": 1.6743600600020727,
+        "params": 187266,
+        "hidden": 128
+      },
+      "gcn-st": {
+        "rmse": {
+          "mean": 6.749398231506348,
+          "ci95": NaN,
+          "values": [
+            6.749398231506348
+          ]
+        },
+        "mae": {
+          "mean": 5.707721710205078,
+          "ci95": NaN,
+          "values": [
+            5.707721710205078
+          ]
+        },
+        "pearson": {
+          "mean": 0.4663451313972473,
+          "ci95": NaN,
+          "values": [
+            0.4663451313972473
+          ]
+        },
+        "time_s_mean": 1.7821007509992342,
+        "params": 220930,
+        "hidden": 128
+      },
+      "gsc-bc": {
+        "rmse": {
+          "mean": 7.243415832519531,
+          "ci95": NaN,
+          "values": [
+            7.243415832519531
+          ]
+        },
+        "mae": {
+          "mean": 6.5875468254089355,
+          "ci95": NaN,
+          "values": [
+            6.5875468254089355
+          ]
+        },
+        "pearson": {
+          "mean": 0.7828916311264038,
+          "ci95": NaN,
+          "values": [
+            0.7828916311264038
+          ]
+        },
+        "time_s_mean": 17.368033217004267,
+        "params": 1178245,
+        "hidden": 128
+      },
+      "gsc-ca": {
+        "rmse": {
+          "mean": 7.288543701171875,
+          "ci95": NaN,
+          "values": [
+            7.288543701171875
+          ]
+        },
+        "mae": {
+          "mean": 6.518353462219238,
+          "ci95": NaN,
+          "values": [
+            6.518353462219238
+          ]
+        },
+        "pearson": {
+          "mean": 0.7504721283912659,
+          "ci95": NaN,
+          "values": [
+            0.7504721283912659
+          ]
+        },
+        "time_s_mean": 28.237019353000505,
+        "params": 1378309,
+        "hidden": 128
+      }
+    },
+    "flat_rows": [
+      {
+        "dataset": "esol",
+        "K": 10,
+        "model": "gcn-ds",
+        "model_display": "GCN+DeepSets",
+        "seed": 0,
+        "test_rmse": 6.646442413330078,
+        "test_mae": 5.711822032928467,
+        "test_pearson": 0.6883357167243958,
+        "time_s": 1.6743600600020727,
+        "params": 187266
+      },
+      {
+        "dataset": "esol",
+        "K": 10,
+        "model": "gcn-st",
+        "model_display": "GCN+SetTransformer",
+        "seed": 0,
+        "test_rmse": 6.749398231506348,
+        "test_mae": 5.707721710205078,
+        "test_pearson": 0.4663451313972473,
+        "time_s": 1.7821007509992342,
+        "params": 220930
+      },
+      {
+        "dataset": "esol",
+        "K": 10,
+        "model": "gsc-bc",
+        "model_display": "GraphSetConv-Broadcast",
+        "seed": 0,
+        "test_rmse": 7.243415832519531,
+        "test_mae": 6.5875468254089355,
+        "test_pearson": 0.7828916311264038,
+        "time_s": 17.368033217004267,
+        "params": 1178245
+      },
+      {
+        "dataset": "esol",
+        "K": 10,
+        "model": "gsc-ca",
+        "model_display": "GraphSetConv-CrossAttn",
+        "seed": 0,
+        "test_rmse": 7.288543701171875,
+        "test_mae": 6.518353462219238,
+        "test_pearson": 0.7504721283912659,
+        "time_s": 28.237019353000505,
+        "params": 1378309
+      }
+    ],
+    "split_sizes": {
+      "train_sets": 90,
+      "val_sets": 11,
+      "test_sets": 11,
+      "train_mols": 900,
+      "val_mols": 110,
+      "test_mols": 110
+    },
+    "target_stats": {
+      "mean": -2.8722012042999268,
+      "std": 2.0596375465393066
+    }
+  }
+]

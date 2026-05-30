@@ -1,0 +1,272 @@
+{
+  "args": {
+    "device": "cpu",
+    "out_dir": "results/molnet_subgraph_bace",
+    "dataset": "bace",
+    "data_root": "data/molnet",
+    "split": "random",
+    "feature_mode": "rich",
+    "hidden": 64,
+    "hidden_gst": 32,
+    "hidden_gcn": null,
+    "layers": 3,
+    "num_heads": 4,
+    "dropout": 0.1,
+    "epochs": 200,
+    "patience": 30,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "batch_size_single": 32,
+    "batch_size_subgraphs": 8,
+    "k_subgraphs": 8,
+    "seeds": 3,
+    "seed_offset": 0,
+    "conditions": [
+      "A",
+      "E",
+      "H",
+      "I"
+    ]
+  },
+  "per_cond": {
+    "A": {
+      "name": "GST single",
+      "params": 44132,
+      "primary_seeds": [
+        0.902210433244916,
+        0.9213085764809903,
+        0.9183023872679046
+      ],
+      "primary_mean_ci": [
+        0.9139404656646036,
+        0.02550987357516711
+      ],
+      "secondary_mean_ci": {
+        "test_acc": [
+          0.8421052631578947,
+          0.043239543471897485
+        ]
+      },
+      "best_val_mean": 0.8743503425466571
+    },
+    "E": {
+      "name": "GCN baseline",
+      "params": 19649,
+      "primary_seeds": [
+        0.9221927497789567,
+        0.9057471264367816,
+        0.9259062776304156
+      ],
+      "primary_mean_ci": [
+        0.9179487179487179,
+        0.02665176451645939
+      ],
+      "secondary_mean_ci": {
+        "test_acc": [
+          0.8399122807017543,
+          0.009435641951204912
+        ]
+      },
+      "best_val_mean": 0.8620068509331443
+    },
+    "H": {
+      "name": "GST + node-del subgraphs",
+      "params": 44132,
+      "primary_seeds": [
+        0.91105216622458,
+        0.9145888594164456,
+        0.9168877099911583
+      ],
+      "primary_mean_ci": [
+        0.9141762452107279,
+        0.007302300428566306
+      ],
+      "secondary_mean_ci": {
+        "test_acc": [
+          0.8377192982456142,
+          0.0736947194913698
+        ]
+      },
+      "best_val_mean": 0.868119536971415
+    },
+    "I": {
+      "name": "GCN+DS + node-del subgraphs",
+      "params": 27969,
+      "primary_seeds": [
+        0.8744473916887711,
+        0.8986737400530505,
+        0.8751547303271441
+      ],
+      "primary_mean_ci": [
+        0.8827586206896552,
+        0.03424988600405081
+      ],
+      "secondary_mean_ci": {
+        "test_acc": [
+          0.8048245614035089,
+          0.05253543099634295
+        ]
+      },
+      "best_val_mean": 0.8559532246633593
+    }
+  },
+  "comparisons": [
+    {
+      "a": "I",
+      "b": "E",
+      "mean_diff": -0.03519009725906275,
+      "dz_a_better": -1.4424456310077234
+    },
+    {
+      "a": "H",
+      "b": "I",
+      "mean_diff": 0.03141762452107277,
+      "dz_a_better": 2.2985884984399787
+    },
+    {
+      "a": "H",
+      "b": "A",
+      "mean_diff": 0.00023577954612430396,
+      "dz_a_better": 0.02980430658637414
+    },
+    {
+      "a": "H",
+      "b": "E",
+      "mean_diff": -0.0037724727379899736,
+      "dz_a_better": -0.343713658106568
+    },
+    {
+      "a": "A",
+      "b": "E",
+      "mean_diff": -0.004008252284114278,
+      "dz_a_better": -0.22215461528382754
+    }
+  ],
+  "rows": [
+    {
+      "condition": "A",
+      "seed": 0,
+      "best_val": 0.8643692416725726,
+      "params": 44132,
+      "elapsed_s": 35.60737085342407,
+      "epochs_run": 97,
+      "test_acc": 0.8618421052631579,
+      "test_auroc": 0.902210433244916
+    },
+    {
+      "condition": "A",
+      "seed": 1,
+      "best_val": 0.8599397590361445,
+      "params": 44132,
+      "elapsed_s": 43.71025609970093,
+      "epochs_run": 118,
+      "test_acc": 0.8289473684210527,
+      "test_auroc": 0.9213085764809903
+    },
+    {
+      "condition": "A",
+      "seed": 2,
+      "best_val": 0.8987420269312545,
+      "params": 44132,
+      "elapsed_s": 41.22387742996216,
+      "epochs_run": 109,
+      "test_acc": 0.8355263157894737,
+      "test_auroc": 0.9183023872679046
+    },
+    {
+      "condition": "E",
+      "seed": 0,
+      "best_val": 0.8611800141743444,
+      "params": 19649,
+      "elapsed_s": 30.22902750968933,
+      "epochs_run": 190,
+      "test_acc": 0.8421052631578947,
+      "test_auroc": 0.9221927497789567
+    },
+    {
+      "condition": "E",
+      "seed": 1,
+      "best_val": 0.8581679659815734,
+      "params": 19649,
+      "elapsed_s": 20.811824321746826,
+      "epochs_run": 122,
+      "test_acc": 0.8421052631578947,
+      "test_auroc": 0.9057471264367816
+    },
+    {
+      "condition": "E",
+      "seed": 2,
+      "best_val": 0.8666725726435153,
+      "params": 19649,
+      "elapsed_s": 18.975275993347168,
+      "epochs_run": 118,
+      "test_acc": 0.8355263157894737,
+      "test_auroc": 0.9259062776304156
+    },
+    {
+      "condition": "H",
+      "seed": 0,
+      "best_val": 0.8731396172927002,
+      "params": 44132,
+      "elapsed_s": 140.91956210136414,
+      "epochs_run": 56,
+      "test_acc": 0.8092105263157895,
+      "test_auroc": 0.91105216622458
+    },
+    {
+      "condition": "H",
+      "seed": 1,
+      "best_val": 0.8447909284195605,
+      "params": 44132,
+      "elapsed_s": 146.36460757255554,
+      "epochs_run": 57,
+      "test_acc": 0.868421052631579,
+      "test_auroc": 0.9145888594164456
+    },
+    {
+      "condition": "H",
+      "seed": 2,
+      "best_val": 0.8864280652019844,
+      "params": 44132,
+      "elapsed_s": 202.014750957489,
+      "epochs_run": 80,
+      "test_acc": 0.8355263157894737,
+      "test_auroc": 0.9168877099911583
+    },
+    {
+      "condition": "I",
+      "seed": 0,
+      "best_val": 0.8504606661941886,
+      "params": 27969,
+      "elapsed_s": 137.70903706550598,
+      "epochs_run": 93,
+      "test_acc": 0.7894736842105263,
+      "test_auroc": 0.8744473916887711
+    },
+    {
+      "condition": "I",
+      "seed": 1,
+      "best_val": 0.8557760453579022,
+      "params": 27969,
+      "elapsed_s": 195.77808380126953,
+      "epochs_run": 134,
+      "test_acc": 0.8289473684210527,
+      "test_auroc": 0.8986737400530505
+    },
+    {
+      "condition": "I",
+      "seed": 2,
+      "best_val": 0.8616229624379873,
+      "params": 27969,
+      "elapsed_s": 231.52721858024597,
+      "epochs_run": 161,
+      "test_acc": 0.7960526315789473,
+      "test_auroc": 0.8751547303271441
+    }
+  ],
+  "env": {
+    "python": "3.14.5",
+    "torch": "2.10.0+cu128",
+    "platform": "Linux-7.0.9-1-cachyos-x86_64-with-glibc2.43"
+  }
+}

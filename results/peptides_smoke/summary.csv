@@ -1,0 +1,5 @@
+protocol,task,model_key,model_name,seed,hidden,params,wall_seconds,ap,bce_loss
+metis,func,gsc-bc,GraphSetConv-Broadcast,0,96,513518,5.68,0.33155691702941475,0.34280043840408325
+metis,func,gsc-ca,GraphSetConv-CrossAttn,0,96,663278,9.12,0.3688918404417638,0.3383965790271759
+metis,func,gcn-ds,GCN+DeepSets,0,96,102250,1.71,0.22315374305801905,0.36076387763023376
+metis,func,gcn-st,GCN+SetTransformer,0,96,177322,2.06,0.24714167911349336,0.3550901412963867

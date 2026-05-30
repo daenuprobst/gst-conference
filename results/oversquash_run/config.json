@@ -1,0 +1,72 @@
+{
+  "args": {
+    "device": "cpu",
+    "out_dir": "results/oversquash_run",
+    "quick": true,
+    "sweep": "B",
+    "B_values": [
+      "1",
+      "8"
+    ],
+    "N_values": [
+      10,
+      20
+    ],
+    "K_values": [
+      2,
+      4
+    ],
+    "K": 2,
+    "N": 20,
+    "B": 1,
+    "intra_p": 0.5,
+    "train_size": 200,
+    "val_size": 50,
+    "test_size": 100,
+    "data_seed": 0,
+    "models": [
+      "gcn-only",
+      "gcn-ds",
+      "gcn-st",
+      "gsc-v1",
+      "gsc-v2"
+    ],
+    "hidden": 64,
+    "layers": 3,
+    "num_heads": 4,
+    "dropout": 0.1,
+    "epochs": 5,
+    "patience": 5,
+    "batch_size": 16,
+    "lr": 0.001,
+    "seeds": 1,
+    "seed_offset": 0,
+    "B_inf_marker": 16.0
+  },
+  "models": {
+    "gcn-only": "GCN-only (uncut)",
+    "gcn-ds": "GCN+DeepSets (cut)",
+    "gcn-st": "GCN+SetTransformer (cut)",
+    "gsc-v1": "GraphSetConv-V1 (cut)",
+    "gsc-v2": "GraphSetConv-V2 (cut)"
+  },
+  "configs": [
+    {
+      "K": 2,
+      "N": 20,
+      "B": 1
+    },
+    {
+      "K": 2,
+      "N": 20,
+      "B": 8
+    }
+  ],
+  "env": {
+    "python": "3.14.4",
+    "torch": "2.10.0+cu128",
+    "platform": "Linux-7.0.2-2-cachyos-x86_64-with-glibc2.43",
+    "cuda": false,
+    "cuda_device": null
+  }
+}

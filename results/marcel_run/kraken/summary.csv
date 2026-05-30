@@ -1,0 +1,6 @@
+dataset,model_key,model_name,seed,target,mae,overall_mae,params,wall_seconds
+kraken,gsc-bc,GraphSetConv-PaiNN-Broadcast,0,sterimol_B5,0.4198019504547119,0.4198019504547119,1382789,201.23
+kraken,gsc-ca,GraphSetConv-PaiNN-CrossAttn,0,sterimol_B5,0.471569687128067,0.471569687128067,1581701,208.93
+kraken,painn-ds,PaiNN+DeepSets,0,sterimol_B5,0.44825199246406555,0.44825199246406555,802817,165.63
+kraken,painn-st,PaiNN+SetTransformer,0,sterimol_B5,0.40831926465034485,0.40831926465034485,935681,192.56
+kraken,painn-bp,PaiNN+BoltzmannPool,0,sterimol_B5,0.4290725290775299,0.4290725290775299,769793,170.79

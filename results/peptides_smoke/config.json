@@ -1,0 +1,72 @@
+{
+  "args": {
+    "device": "cpu",
+    "data_root": "data/peptides",
+    "out_dir": "results/peptides_smoke",
+    "quick": true,
+    "task": "func",
+    "num_partitions": 8,
+    "max_atoms": null,
+    "max_graphs": 600,
+    "models": [
+      "gsc-bc",
+      "gsc-ca",
+      "gcn-ds",
+      "gcn-st"
+    ],
+    "hidden": 96,
+    "layers": 4,
+    "num_heads": 4,
+    "dropout": 0.1,
+    "equalize_params": "none",
+    "epochs": 3,
+    "patience": 3,
+    "batch_size": 16,
+    "lr": 0.001,
+    "seeds": 1,
+    "seed_offset": 0,
+    "split_seed": 0,
+    "val_fraction_from_train": 0.1,
+    "train_size_ablation": false,
+    "train_size_fractions": [
+      0.025,
+      0.05,
+      0.1,
+      0.2,
+      0.3,
+      0.5,
+      0.7
+    ],
+    "train_size_min_val": 50
+  },
+  "models": {
+    "gsc-bc": "GraphSetConv-Broadcast",
+    "gsc-ca": "GraphSetConv-CrossAttn",
+    "gcn-ds": "GCN+DeepSets",
+    "gcn-st": "GCN+SetTransformer"
+  },
+  "model_param_counts": {
+    "gsc-bc": 513518,
+    "gsc-ca": 663278,
+    "gcn-ds": 102250,
+    "gcn-st": 177322
+  },
+  "model_hidden_dims": {
+    "gsc-bc": 96,
+    "gsc-ca": 96,
+    "gcn-ds": 96,
+    "gcn-st": 96
+  },
+  "split_sizes": {
+    "train": 420,
+    "val": 90,
+    "test": 90
+  },
+  "env": {
+    "python": "3.14.5",
+    "torch": "2.10.0+cu128",
+    "platform": "Linux-7.0.9-1-cachyos-x86_64-with-glibc2.43",
+    "cuda": false,
+    "cuda_device": null
+  }
+}

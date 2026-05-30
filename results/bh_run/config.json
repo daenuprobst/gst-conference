@@ -1,0 +1,55 @@
+{
+  "args": {
+    "device": "cpu",
+    "data_root": "data/bh",
+    "out_dir": "results/bh_run",
+    "quick": false,
+    "protocol": "random",
+    "models": [
+      "gsc-v1-ca",
+      "gsc-v2-ca",
+      "gsc-v3-ca",
+      "gcn-ds",
+      "gcn-st"
+    ],
+    "hidden": 128,
+    "layers": 3,
+    "num_heads": 4,
+    "num_pool_tokens": 4,
+    "num_registers": 2,
+    "dropout": 0.1,
+    "epochs": 200,
+    "patience": 30,
+    "batch_size": 32,
+    "lr": 0.001,
+    "seeds": 5,
+    "seed_offset": 0,
+    "train_ratio": 0.7,
+    "val_ratio": 0.1,
+    "split_seed": 0,
+    "val_fraction_from_train": 0.1
+  },
+  "models": {
+    "gsc-v1-ca": "GraphSetConv-V1",
+    "gsc-v2-ca": "GraphSetConv-V2-CrossAttn",
+    "gsc-v3-ca": "GraphSetConv-V3",
+    "gcn-ds": "GCN+DeepSets",
+    "gcn-st": "GCN+SetTransformer"
+  },
+  "split_sizes": {
+    "train": 2768,
+    "val": 396,
+    "test": 791
+  },
+  "target_stats": {
+    "mean": 32.62643051147461,
+    "std": 27.21940803527832
+  },
+  "env": {
+    "python": "3.14.4",
+    "torch": "2.10.0+cu128",
+    "platform": "Linux-7.0.2-2-cachyos-x86_64-with-glibc2.43",
+    "cuda": false,
+    "cuda_device": null
+  }
+}

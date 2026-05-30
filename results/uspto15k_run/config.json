@@ -1,0 +1,67 @@
+{
+  "args": {
+    "data_dir": "data/uspto15k/",
+    "out_dir": "results/uspto15k_run",
+    "device": "cpu",
+    "quick": false,
+    "hidden": 128,
+    "layers": 1,
+    "num_heads": 4,
+    "dropout": 0.1,
+    "epochs": 20,
+    "batch_size": 16,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "seeds": 5,
+    "seed_offset": 0,
+    "max_train": 1000,
+    "max_val": null,
+    "max_test": null,
+    "equalize_params": "smaller",
+    "models": [
+      "gsc-ca",
+      "gsc-bc",
+      "gcn-ds",
+      "gcn-st"
+    ]
+  },
+  "model_param_counts": {
+    "gcn-ds": 134913,
+    "gcn-st": 267777,
+    "gsc-ca": 130798,
+    "gsc-bc": 130622
+  },
+  "model_hidden_dims": {
+    "gcn-ds": 128,
+    "gcn-st": 128,
+    "gsc-ca": 76,
+    "gsc-bc": 84
+  },
+  "audit": {
+    "train": {
+      "n_reactions": 1000,
+      "mean_reactants": 3.57,
+      "mean_atoms": 34.756,
+      "pos_density": 0.09486131890896536
+    },
+    "valid": {
+      "n_reactions": 1495,
+      "mean_reactants": 3.5906354515050167,
+      "mean_atoms": 34.48160535117057,
+      "pos_density": 0.09751697381183318
+    },
+    "test": {
+      "n_reactions": 2989,
+      "mean_reactants": 3.6068919371027097,
+      "mean_atoms": 34.94111743057879,
+      "pos_density": 0.09586457166384205
+    }
+  },
+  "env": {
+    "python": "3.14.4",
+    "torch": "2.10.0+cu128",
+    "platform": "Linux-7.0.9-1-cachyos-x86_64-with-glibc2.43",
+    "cuda": false,
+    "cuda_device": null
+  }
+}

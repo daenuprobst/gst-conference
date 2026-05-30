@@ -1,0 +1,80 @@
+{
+  "args": {
+    "device": "cpu",
+    "data_root": "data/polymer",
+    "out_dir": "results/polymer_run",
+    "quick": true,
+    "max_rows": 500,
+    "models": [
+      "gsc-v1-ca",
+      "gsc-v2-ca",
+      "gsc-v3-ca",
+      "gcn-ds",
+      "gcn-st"
+    ],
+    "hidden": 128,
+    "layers": 3,
+    "num_heads": 4,
+    "num_pool_tokens": 4,
+    "num_registers": 2,
+    "dropout": 0.1,
+    "equalize_params": "smaller",
+    "epochs": 200,
+    "patience": 30,
+    "batch_size": 16,
+    "lr": 0.001,
+    "seeds": 1,
+    "seed_offset": 0,
+    "train_ratio": 0.7,
+    "val_ratio": 0.1,
+    "split_seed": 0,
+    "plot_metric": "val_mae"
+  },
+  "models": {
+    "gsc-v1-ca": "GraphSetConv-V1",
+    "gsc-v2-ca": "GraphSetConv-V2-CrossAttn",
+    "gsc-v3-ca": "GraphSetConv-V3",
+    "gcn-ds": "GCN+DeepSets",
+    "gcn-st": "GCN+SetTransformer"
+  },
+  "model_param_counts": {
+    "gsc-v1-ca": 131325,
+    "gsc-v2-ca": 147009,
+    "gsc-v3-ca": 137238,
+    "gcn-ds": 138114,
+    "gcn-st": 270978
+  },
+  "model_hidden_dims": {
+    "gsc-v1-ca": 56,
+    "gsc-v2-ca": 52,
+    "gsc-v3-ca": 44,
+    "gcn-ds": 128,
+    "gcn-st": 128
+  },
+  "split_sizes": {
+    "train": 350,
+    "val": 50,
+    "test": 100
+  },
+  "target_stats": {
+    "mean": [
+      2.6358113288879395,
+      6.4501729011535645
+    ],
+    "std": [
+      0.5413818955421448,
+      0.567604124546051
+    ],
+    "names": [
+      "EA",
+      "IP"
+    ]
+  },
+  "env": {
+    "python": "3.14.4",
+    "torch": "2.10.0+cu128",
+    "platform": "Linux-7.0.2-2-cachyos-x86_64-with-glibc2.43",
+    "cuda": false,
+    "cuda_device": null
+  }
+}

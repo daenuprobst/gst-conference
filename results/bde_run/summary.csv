@@ -1,0 +1,5 @@
+model_key,model_name,seed,hidden,params,test_mae,wall_seconds
+gsc-bc,GraphSetConv-PaiNN-Broadcast,0,96,3020365,40.5689811706543,289.48
+gsc-ca,GraphSetConv-PaiNN-CrossAttn,0,92,3191861,23.904333114624023,297.13
+painn-ds,PaiNN+DeepSets,0,128,3059969,14.114156723022461,352.49
+painn-st,PaiNN+SetTransformer,0,128,3325697,8.09274673461914,352.38
